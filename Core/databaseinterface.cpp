@@ -4,3 +4,7 @@ DataBaseInterface::DataBaseInterface()
 {
 
 }
+
+DataBaseInterface::~DataBaseInterface()
+{
+}

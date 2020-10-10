@@ -5,6 +5,8 @@
 #include "taskunit.h"
 #include "personage.h"
 #include <map>
+#include "databaseinterface.h"
+#include "../Database/dbhandler.h"
 
 extern int ScoresForLevel[5];
 
@@ -33,6 +35,8 @@ private:
     static int pers_id;
     static int skill_id;
     static int task_id;
+
+    DataBaseInterface* DB;
 
 public:
 

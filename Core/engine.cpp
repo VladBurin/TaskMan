@@ -12,6 +12,47 @@ int ScoresForSkillUpdated[5] = {100,200,300,400,500};
 
 Engine::Engine()
 {
+    DB = new DBhandler();
+    DB->CreateBase("TaskMan");
+
+    std::string personages_table = "personages "
+                                   "( id INT PRIMARY KEY NOT NULL, "
+                                   "name TINYTEXT, "
+                                   "description TEXT, "
+                                   "level INT, "
+                                   "scores_sum INT )";
+
+    std::string skill_table = "skills "
+                              "(id INT PRIMARY KEY NOT NULL, "
+                              "name TINYTEXT, "
+                              "description TEXT, "
+                              "level INT, "
+                              "scores_sum INT, "
+                              "pers_id INT )";
+
+    std::string complete_tasks = "complete_tasks "
+                                 "(id INT PRIMARY KEY NOT NULL, "
+                                 "name TEXT, "
+                                 "description TEXT, "
+                                 "score_for_task INT, "
+                                 "belong_skill_person BOOL, "
+                                 "belong_id INT, "
+                                 "parent_task INT )";
+
+    std::string incomplete_tasks= "incomplete_tasks "
+                                  "(id INT PRIMARY KEY NOT NULL,"
+                                  "name TEXT, "
+                                  "description TEXT, "
+                                  "score_for_task INT, "
+                                  "belong_skill_person BOOL, "
+                                  "belong_id INT, "
+                                  "parent_task INT )";
+
+    DB->CreateTable(personages_table);
+    DB->CreateTable(skill_table);
+    DB->CreateTable(complete_tasks);
+    DB->CreateTable(incomplete_tasks);
+
 }
 
 void Engine::CreatePers(std::string name, std::string description)
