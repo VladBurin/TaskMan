@@ -6,6 +6,7 @@ int Engine::pers_id     = 0;
 int Engine::skill_id    = 0;
 int Engine::task_id     = 0;
 
+
 int ScoresForLevel[5] = {1000, 1000, 1000, 1000, 1000};
 
 int ScoresForSkillUpdated[5] = {100,200,300,400,500};
@@ -58,7 +59,12 @@ Engine::Engine()
 void Engine::CreatePers(std::string name, std::string description)
 {
     Personages.insert(std::make_pair(pers_id,Personage(pers_id,name,description)));
+    Personage *pers = GetPersById(pers_id);
+
+    DB->AddPersonage(pers);
+
     pers_id++;
+
 }
 
 void Engine::CreateSkill(int pers_id, std::string name, std::string description)
@@ -69,10 +75,12 @@ void Engine::CreateSkill(int pers_id, std::string name, std::string description)
 
     Skills.insert(std::make_pair(skill_id,
                                  Skill(skill_id, pers_id, name, description)));
+
+    DB->AddSkill(GetSkillById(skill_id));
     skill_id++;
 }
 
-void Engine::CreateTask(int id, int belong_id, int parent, std::string name,
+void Engine::CreateTask(int belong_id, int parent, std::string name,
                 std::string description, int scores, bool belong_skill_pers)
 {
     // Если принадлежит скилу
@@ -82,13 +90,13 @@ void Engine::CreateTask(int id, int belong_id, int parent, std::string name,
         if(!skill)
             return;
 
-        IncompleteTasks.insert(std::make_pair(id,
-                                              TaskUnit(id,belong_id,parent,name,description,scores,belong_skill_pers)));
+        IncompleteTasks.insert(std::make_pair(task_id,
+                                              TaskUnit(task_id,belong_id,parent,name,description,scores,belong_skill_pers)));
         TaskUnit* task = GetTaskById(parent);
-        if(!task)
-            return;
-        else
-            task->AddChild(id);
+        if(task)
+            task->AddChild(task_id);
+        task = GetTaskById(task_id);
+        DB->AddIncompTask(task);
     }
     // Если принадлежит персонажу
     else
@@ -97,15 +105,29 @@ void Engine::CreateTask(int id, int belong_id, int parent, std::string name,
         if(!pers)
             return;
 
-        IncompleteTasks.insert(std::make_pair(id,
-                                              TaskUnit(id,belong_id,parent,name,description,scores,belong_skill_pers)));
+        IncompleteTasks.insert(std::make_pair(task_id,
+                                              TaskUnit(task_id,belong_id,parent,name,description,scores,belong_skill_pers)));
 
         TaskUnit* task = GetTaskById(parent);
-        if(!task)
-            return;
-        else
-            task->AddChild(id);
+        if(task)
+            task->AddChild(task_id);
+        task = GetTaskById(task_id);
+        DB->AddIncompTask(task);
     }
+
+    task_id++;
+}
+
+void Engine::DeletePers(int id)
+{
+    Personages.erase(id);
+    DB->DeletePersonage(id);
+}
+
+void Engine::DeleteSkill(int id)
+{
+    Skills.erase(id);
+    DB->DeleteSkill(id);
 }
 
 bool Engine::CheckChildCompleted(int id)
@@ -135,7 +157,9 @@ void Engine::TaskComplete(int id)
 
     // Добавление в выполненные и удаление из невыполненных
     CompleteTasks.insert(std::make_pair(id, *complete));
-    DeleteFromIncomplete(id);
+    DB->AddCompTask(complete);
+    IncompleteTasks.erase(id);
+    DB->DeleteIncompTask(id);
 
     // Добавляем опыт кому надо
     bool belong = complete->GetBelongSkillPers();
@@ -154,11 +178,6 @@ void Engine::TaskComplete(int id)
     int par_id = complete->GetParentId();
     if(CheckChildCompleted(par_id))
         TaskComplete(par_id);
-}
-
-void Engine::DeleteFromIncomplete(int id)
-{
-    IncompleteTasks.erase(id);
 }
 
 Personage* Engine::GetPersById(int id)
@@ -198,6 +217,7 @@ void Engine::AddScoreToPers(int id, int scores)
         return;
 
     pers->AddScores(scores);
+    DB->PersUpdate(pers);
 }
 
 void Engine::AddScoreToSkill(int id, int scores)
@@ -223,7 +243,10 @@ void Engine::AddScoreToSkill(int id, int scores)
         if(!pers)
             return;
         pers->AddScores(score_for_update);
+
+        DB->PersUpdate(pers);
     }
+    DB->SkillUpdate(skill);
 
 
 }

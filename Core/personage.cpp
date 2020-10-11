@@ -26,3 +26,28 @@ void Personage::AddScores(int scores)
         i++;
     }
 }
+
+int Personage::GetId()
+{
+    return Id;
+}
+
+std::string Personage::GetName()
+{
+    return Name;
+}
+
+std::string Personage::GetDescript()
+{
+    return Description;
+}
+
+int Personage::GetLevel()
+{
+    return Level;
+}
+
+int Personage::GetScoresSum()
+{
+    return ScoresSum;
+}

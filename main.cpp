@@ -16,25 +16,28 @@ int main(int argc, char *argv[])
 
     Engine* MainEngine = Engine::getInstance();
 
-    MainEngine->CreatePers("Clark","yes");
-
+    MainEngine->CreatePers("Clark","long description");
     MainEngine->CreatePers("Rob","no");
 
+
     MainEngine->CreateSkill(1,"Ability","Just Descript");
+    MainEngine->DeleteSkill(0);
+
     MainEngine->CreateSkill(0,"Strength","Just Descript tup");
     MainEngine->CreateSkill(1,"Jump","Just Descript pop");
 
     // Добавление двух задач в 1 персонажа
-    MainEngine->CreateTask(1,1,-11,"Task1","Descript1",500,true);
-    MainEngine->CreateTask(2,1,-11,"Task11","Descript11",1000,true);
-    // Добавление 2-ух подзадач для 2-ой задачи и для 3-ой
-    MainEngine->CreateTask(3,1,2,"Task2", "Descript2",700,true);
-    MainEngine->CreateTask(4,1,2,"Task22", "Descript22",900,true);
-    MainEngine->CreateTask(5,1,3,"Task3","Descript3",800,true);
+    MainEngine->CreateTask(1,-11,"Task1","Descript1",500,false);
+    MainEngine->CreateTask(1,-11,"Task11","Descript11",1000,false);
 
-    MainEngine->TaskComplete(5);
+    // Добавление 2-ух подзадач для 2-ой задачи и для 3-ой
+    MainEngine->CreateTask(1,1,"Task2", "Descript2",700,false);
+    MainEngine->CreateTask(1,1,"Task22", "Descript22",900,false);
+    MainEngine->CreateTask(1,2,"Task3","Descript3",800,false);
+
     MainEngine->TaskComplete(4);
-    MainEngine->TaskComplete(1);
+    MainEngine->TaskComplete(3);
+    MainEngine->TaskComplete(0);
     /*
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QString path = "/home/vladburin/TaskMan/Database";

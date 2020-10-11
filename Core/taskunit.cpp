@@ -9,14 +9,29 @@ TaskUnit::TaskUnit(int id, int belong_id, int par_id, std::string name,
 
 }
 
-int TaskUnit::GetId()
+void TaskUnit::AddChild(int id)
 {
-    return Id;
+    ChildTasks.push_back(id);
 }
 
 std::vector<int>& TaskUnit::GetChildTasksId()
 {
     return ChildTasks;
+}
+
+int TaskUnit::GetId()
+{
+    return Id;
+}
+
+std::string TaskUnit::GetName()
+{
+    return Name;
+}
+
+std::string TaskUnit::GetDescript()
+{
+    return Description;
 }
 
 int TaskUnit::GetParentId()
@@ -29,11 +44,6 @@ bool TaskUnit::GetBelongSkillPers()
     return BelongSkillOrPers;
 }
 
-void TaskUnit::AddChild(int id)
-{
-    ChildTasks.push_back(id);
-}
-
 int TaskUnit::GetScoresForTask()
 {
     return ScoresForTask;
@@ -43,3 +53,4 @@ int TaskUnit::GetBelongId()
 {
     return BelongId;
 }
+

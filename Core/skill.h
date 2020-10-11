@@ -33,7 +33,15 @@ public:
 
     void AddScores(int scores);
 
+    int GetId();
+
+    std::string GetName();
+
+    std::string GetDescript();
+
     int GetLevel();
+
+    int GetScoresSum();
 
     int GetPersId();
 };

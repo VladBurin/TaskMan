@@ -29,6 +29,26 @@ void Skill::AddScores(int scores)
 
 }
 
+int Skill::GetId()
+{
+    return Id;
+}
+
+std::string Skill::GetName()
+{
+    return Name;
+}
+
+std::string Skill::GetDescript()
+{
+    return Description;
+}
+
+int Skill::GetScoresSum()
+{
+    return ScoresSum;
+}
+
 int Skill::GetLevel()
 {
     return Level;

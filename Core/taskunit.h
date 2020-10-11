@@ -40,15 +40,19 @@ public:
 
     int GetId();
 
-    std::vector<int>& GetChildTasksId();
+    std::string GetName();
 
-    int GetParentId();
-
-    int GetBelongId();
+    std::string GetDescript();
 
     bool GetBelongSkillPers();
 
+    int GetBelongId();
+
+    int GetParentId();
+
     int GetScoresForTask();
+
+    std::vector<int>& GetChildTasksId();
 
     void AddChild(int id);
 };

@@ -35,7 +35,7 @@ private:
     static int pers_id;
     static int skill_id;
     static int task_id;
-
+    static std::vector<int> forbidden_pers_id;
     DataBaseInterface* DB;
 
 public:
@@ -51,8 +51,12 @@ public:
 
     void CreateSkill(int pers_id, std::string name, std::string description);
 
-    void CreateTask(int id, int belong_id, int parent, std::string name,
+    void CreateTask(int belong_id, int parent, std::string name,
                     std::string description, int scores, bool belong_skill_pers);
+
+    void DeletePers(int id);
+
+    void DeleteSkill(int id);
 
     void TaskComplete(int id);
 
@@ -69,7 +73,6 @@ public:
     void AddScoreToPers(int id, int scores);
 
     void AddScoreToSkill(int id, int scores);
-
 };
 
 #endif // ENGINE_H

@@ -33,8 +33,241 @@ void DBhandler::CreateTable(std::string full_description)
     {
         QString str = "CREATE TABLE IF NOT EXISTS " + QString::fromStdString(full_description) + ";";
         QSqlQuery Query(db);
-        bool ok = Query.exec(str);
-        str = db.lastError().text();
+        return;
+    }
+}
+
+void DBhandler::AddPersonage(Personage* pers)
+{
+    int id = pers->GetId();
+
+    std::string name = pers->GetName();
+
+    std::string descript = pers->GetDescript();
+
+    int level = pers->GetLevel();
+
+    int scores_sum = pers->GetScoresSum();
+
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("INSERT INTO personages (id,name, description, level, scores_sum) "
+                      "VALUES(:id, :name, :description, :level, :scores_sum);");
+
+        Query.bindValue(":id", id);
+        Query.bindValue(":name", QString::fromStdString(name));
+        Query.bindValue(":description", QString::fromStdString(descript));
+        Query.bindValue(":level", level);
+        Query.bindValue(":scores_sum", scores_sum);
+        Query.exec();
+        return;
+    }
+
+}
+
+void DBhandler::AddSkill(Skill* skill)
+{
+    int id = skill->GetId();
+
+    std::string name = skill->GetName();
+
+    std::string descript = skill->GetDescript();
+
+    int level = skill->GetLevel();
+
+    int scores_sum = skill->GetScoresSum();
+
+    int pers_id = skill->GetPersId();
+
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("INSERT INTO skills (id,name, description, level, scores_sum, pers_id) "
+                      "VALUES(:id, :name, :description, :level, :scores_sum, :pers_id);");
+
+        Query.bindValue(":id", id);
+        Query.bindValue(":name", QString::fromStdString(name));
+        Query.bindValue(":description", QString::fromStdString(descript));
+        Query.bindValue(":level", level);
+        Query.bindValue(":scores_sum", scores_sum);
+        Query.bindValue(":pers_id", pers_id);
+        Query.exec();
+        return;
+    }
+
+}
+
+void DBhandler::PersUpdate(Personage* pers)
+{
+    int id = pers->GetId();
+
+    int level = pers->GetLevel();
+
+    int scores_sum = pers->GetScoresSum();
+
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("UPDATE personages "
+                      "SET scores_sum = :scores_sum, "
+                      "level =  :level "
+                      "WHERE id = :id;");
+
+        Query.bindValue(":id", id);
+        Query.bindValue(":level", level);
+        Query.bindValue(":scores_sum", scores_sum);
+        Query.exec();
+        return;
+    }
+}
+
+void DBhandler::SkillUpdate(Skill* skill)
+{
+    int id = skill->GetId();
+
+    int level = skill->GetLevel();
+
+    int scores_sum = skill->GetScoresSum();
+
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("UPDATE skills "
+                      "SET scores_sum = :scores_sum, "
+                      "level =  :level "
+                      "WHERE id = :id;");
+
+        Query.bindValue(":id", id);
+        Query.bindValue(":level", level);
+        Query.bindValue(":scores_sum", scores_sum);
+        Query.exec();
+        return;
+    }
+}
+
+void DBhandler::AddIncompTask(TaskUnit* task)
+{
+    int id = task->GetId();
+
+    std::string name = task->GetName();
+
+    std::string descript = task->GetDescript();
+
+    bool belong_skill_person = task->GetBelongSkillPers();
+
+    int belong_id = task->GetBelongId();
+
+    int parent_id = task->GetParentId();
+
+    int scores = task->GetScoresForTask();
+
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("INSERT INTO incomplete_tasks "
+                      "(id, name, description, score_for_task, "
+                      "belong_skill_person, belong_id, parent_task) "
+                      "VALUES(:id, :name, :description, :score_for_task, "
+                      ":belong_skill_person, :belong_id, :parent_task);");
+
+        Query.bindValue(":id", id);
+        Query.bindValue(":name", QString::fromStdString(name));
+        Query.bindValue(":description", QString::fromStdString(descript));
+        Query.bindValue(":score_for_task", scores);
+        Query.bindValue(":belong_skill_person", belong_skill_person);
+        Query.bindValue(":belong_id", belong_id);
+        Query.bindValue(":parent_task", parent_id);
+        Query.exec();
+        return;
+    }
+}
+
+void DBhandler::AddCompTask(TaskUnit* task)
+{
+    int id = task->GetId();
+
+    std::string name = task->GetName();
+
+    std::string descript = task->GetDescript();
+
+    bool belong_skill_person = task->GetBelongSkillPers();
+
+    int belong_id = task->GetBelongId();
+
+    int parent_id = task->GetParentId();
+
+    int scores = task->GetScoresForTask();
+
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("INSERT INTO complete_tasks "
+                      "(id, name, description, score_for_task, "
+                      "belong_skill_person, belong_id, parent_task) "
+                      "VALUES(:id, :name, :description, :score_for_task, "
+                      ":belong_skill_person, :belong_id, :parent_task);");
+
+        Query.bindValue(":id", id);
+        Query.bindValue(":name", QString::fromStdString(name));
+        Query.bindValue(":description", QString::fromStdString(descript));
+        Query.bindValue(":score_for_task", scores);
+        Query.bindValue(":belong_skill_person", belong_skill_person);
+        Query.bindValue(":belong_id", belong_id);
+        Query.bindValue(":parent_task", parent_id);
+        Query.exec();
+        return;
+    }
+}
+
+void DBhandler::DeletePersonage(int id)
+{
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("DELETE FROM personages "
+                      "WHERE id = :id;");
+        Query.bindValue(":id",id);
+        Query.exec();
+        return;
+    }
+}
+
+void DBhandler::DeleteSkill(int id)
+{
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("DELETE FROM skills "
+                      "WHERE id = :id;");
+        Query.bindValue(":id",id);
+        Query.exec();
+        return;
+    }
+}
+
+void DBhandler::DeleteIncompTask(int id)
+{
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("DELETE FROM incomplete_tasks "
+                      "WHERE id = :id;");
+        Query.bindValue(":id",id);
+        Query.exec();
+        return;
+    }
+}
+
+void DBhandler::DeleteCompTask(int id)
+{
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("DELETE FROM complete_tasks "
+                      "WHERE id = :id;");
+        Query.bindValue(":id",id);
+        Query.exec();
         return;
     }
 }
