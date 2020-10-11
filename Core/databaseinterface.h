@@ -30,9 +30,12 @@ public:
     virtual void DeleteIncompTask(int id) = 0;
     virtual void DeleteCompTask(int id) = 0;
 
+    virtual std::vector<Personage> LoadPersonages() = 0;
+    virtual std::vector<Skill> LoadSkills() = 0;
+    virtual std::vector<TaskUnit> LoadIncompTasks() = 0;
+    virtual std::vector<TaskUnit> LoadCompTasks() = 0;
 
-
-
+    virtual std::vector<int> GetChildsBy(int parent_id) = 0;
 };
 
 #endif // DATABASEINTERFACE_H

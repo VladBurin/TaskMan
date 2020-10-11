@@ -5,7 +5,9 @@ Engine* Engine::p_instance = nullptr;
 int Engine::pers_id     = 0;
 int Engine::skill_id    = 0;
 int Engine::task_id     = 0;
-
+std::vector<int> Engine::free_pers_ids;
+std::vector<int> Engine::free_skills_ids;
+std::vector<int> Engine::free_tasks_ids;
 
 int ScoresForLevel[5] = {1000, 1000, 1000, 1000, 1000};
 
@@ -54,35 +56,73 @@ Engine::Engine()
     DB->CreateTable(complete_tasks);
     DB->CreateTable(incomplete_tasks);
 
+    LoadFromDB();
+
 }
 
 void Engine::CreatePers(std::string name, std::string description)
 {
-    Personages.insert(std::make_pair(pers_id,Personage(pers_id,name,description)));
-    Personage *pers = GetPersById(pers_id);
+    int id = 0;
+
+    if(!free_pers_ids.empty())
+    {
+        id = free_pers_ids.front();
+        free_pers_ids.erase(free_pers_ids.begin());
+    }
+    else
+    {
+        id = pers_id;
+        pers_id++;
+    }
+
+    Personages.insert(std::make_pair(id,Personage(id,name,description)));
+    Personage *pers = GetPersById(id);
 
     DB->AddPersonage(pers);
-
-    pers_id++;
 
 }
 
 void Engine::CreateSkill(int pers_id, std::string name, std::string description)
 {
+    int id = 0;
+
+    if(!free_skills_ids.empty())
+    {
+        id = free_skills_ids.front();
+        free_skills_ids.erase(free_skills_ids.begin());
+    }
+    else
+    {
+        id = skill_id;
+        skill_id++;
+    }
+
     Personage* pers = GetPersById(pers_id);
     if(!pers)
         return;
 
-    Skills.insert(std::make_pair(skill_id,
-                                 Skill(skill_id, pers_id, name, description)));
+    Skills.insert(std::make_pair(id,
+                                 Skill(id, pers_id, name, description)));
 
-    DB->AddSkill(GetSkillById(skill_id));
-    skill_id++;
+    DB->AddSkill(GetSkillById(id));
 }
 
 void Engine::CreateTask(int belong_id, int parent, std::string name,
                 std::string description, int scores, bool belong_skill_pers)
 {
+    int id = 0;
+
+    if(!free_tasks_ids.empty())
+    {
+        id = free_tasks_ids.front();
+        free_tasks_ids.erase(free_tasks_ids.begin());
+    }
+    else
+    {
+        id = task_id;
+        task_id++;
+    }
+
     // Если принадлежит скилу
     if(belong_skill_pers)
     {
@@ -90,12 +130,12 @@ void Engine::CreateTask(int belong_id, int parent, std::string name,
         if(!skill)
             return;
 
-        IncompleteTasks.insert(std::make_pair(task_id,
-                                              TaskUnit(task_id,belong_id,parent,name,description,scores,belong_skill_pers)));
+        IncompleteTasks.insert(std::make_pair(id,
+                                              TaskUnit(id,belong_id,parent,name,description,scores,belong_skill_pers)));
         TaskUnit* task = GetTaskById(parent);
         if(task)
-            task->AddChild(task_id);
-        task = GetTaskById(task_id);
+            task->AddChild(id);
+        task = GetTaskById(id);
         DB->AddIncompTask(task);
     }
     // Если принадлежит персонажу
@@ -105,17 +145,15 @@ void Engine::CreateTask(int belong_id, int parent, std::string name,
         if(!pers)
             return;
 
-        IncompleteTasks.insert(std::make_pair(task_id,
-                                              TaskUnit(task_id,belong_id,parent,name,description,scores,belong_skill_pers)));
+        IncompleteTasks.insert(std::make_pair(id,
+                                              TaskUnit(id,belong_id,parent,name,description,scores,belong_skill_pers)));
 
         TaskUnit* task = GetTaskById(parent);
         if(task)
-            task->AddChild(task_id);
-        task = GetTaskById(task_id);
+            task->AddChild(id);
+        task = GetTaskById(id);
         DB->AddIncompTask(task);
     }
-
-    task_id++;
 }
 
 void Engine::DeletePers(int id)
@@ -250,3 +288,135 @@ void Engine::AddScoreToSkill(int id, int scores)
 
 
 }
+
+void Engine::LoadFromDB()
+{
+   LoadPersonages();
+   LoadSkills();
+   LoadTasks();
+}
+
+void Engine::LoadPersonages()
+{
+    std::vector<Personage> pers = DB->LoadPersonages();
+    std::vector<int> pers_ids;
+
+    for(auto it = pers.begin(); it != pers.end(); ++it)
+    {
+        Personages.insert(std::make_pair((*it).GetId(),*it));
+        pers_ids.push_back((*it).GetId());
+    }
+
+    std::sort(pers_ids.begin(), pers_ids.end());
+
+    int initial_id = 0;
+
+    for(auto it = pers_ids.begin(); it != pers_ids.end(); ++it)
+    {
+        while(*it - initial_id)
+        {
+            free_pers_ids.push_back(initial_id);
+            initial_id++;
+            continue;
+        }
+        initial_id++;
+    }
+
+    if(!pers_ids.empty())
+    {
+        pers_id = pers_ids.back() + 1;
+    }
+}
+
+void Engine::LoadSkills()
+{
+    std::vector<Skill> skills = DB->LoadSkills();
+    std::vector<int> skills_ids;
+
+    for(auto it = skills.begin(); it != skills.end(); ++it)
+    {
+        Skills.insert(std::make_pair((*it).GetId(),*it));
+        skills_ids.push_back((*it).GetId());
+    }
+
+    std::sort(skills_ids.begin(), skills_ids.end());
+
+    int initial_id = 0;
+
+    for(auto it = skills_ids.begin(); it != skills_ids.end(); ++it)
+    {
+        while(*it - initial_id)
+        {
+            free_skills_ids.push_back(initial_id);
+            initial_id++;
+            continue;
+        }
+        initial_id++;
+    }
+
+    if(!skills_ids.empty())
+    {
+        skill_id = skills_ids.back() + 1;
+    }
+}
+
+void Engine::LoadTasks()
+{
+    std::vector<TaskUnit> incomp_tasks = DB->LoadIncompTasks();
+    std::vector<TaskUnit> comp_tasks = DB->LoadCompTasks();
+    std::vector<int> tasks_ids;
+
+    for(auto it = incomp_tasks.begin(); it != incomp_tasks.end(); ++it)
+    {
+        IncompleteTasks.insert(std::make_pair((*it).GetId(),*it));
+        TaskUnit* task = GetTaskById((*it).GetId());
+
+        // Adding childs
+        std::vector<int> childs = DB->GetChildsBy((*it).GetId());
+        for(auto child = childs.begin(); child != childs.end(); ++child)
+        {
+            task->AddChild(*child);
+        }
+
+
+        tasks_ids.push_back((*it).GetId());
+    }
+
+    for(auto it = comp_tasks.begin(); it != comp_tasks.end(); ++it)
+    {
+        CompleteTasks.insert(std::make_pair((*it).GetId(),*it));
+        TaskUnit* task = GetTaskById((*it).GetId());
+
+        // Adding childs
+        std::vector<int> childs = DB->GetChildsBy((*it).GetId());
+        for(auto child = childs.begin(); child != childs.end(); ++child)
+        {
+            task->AddChild(*child);
+        }
+
+        tasks_ids.push_back((*it).GetId());
+    }
+
+    std::sort(tasks_ids.begin(), tasks_ids.end());
+
+    int initial_id = 0;
+
+    for(auto it = tasks_ids.begin(); it != tasks_ids.end(); ++it)
+    {
+        while(*it - initial_id)
+        {
+            free_tasks_ids.push_back(initial_id);
+            initial_id++;
+            continue;
+        }
+        initial_id++;
+    }
+
+    if(!tasks_ids.empty())
+    {
+        skill_id = tasks_ids.back() + 1;
+    }
+
+
+}
+

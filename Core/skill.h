@@ -30,6 +30,7 @@ private:
 
 public:
     Skill(int id, int pers_id, std::string name, std::string description);
+    Skill(int id, int pers_id, std::string name, std::string description, int level, int scores_sum);
 
     void AddScores(int scores);
 

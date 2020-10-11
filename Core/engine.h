@@ -32,10 +32,14 @@ private:
     /// Хранилище скилов
     std::map<int,Skill> Skills;
 
+    //текущий свободный максимальный идентификатор
     static int pers_id;
     static int skill_id;
     static int task_id;
-    static std::vector<int> forbidden_pers_id;
+
+    static std::vector<int> free_pers_ids;
+    static std::vector<int> free_skills_ids;
+    static std::vector<int> free_tasks_ids;
     DataBaseInterface* DB;
 
 public:
@@ -73,6 +77,14 @@ public:
     void AddScoreToPers(int id, int scores);
 
     void AddScoreToSkill(int id, int scores);
+
+    void LoadFromDB();
+
+    void LoadPersonages();
+
+    void LoadSkills();
+
+    void LoadTasks();
 };
 
 #endif // ENGINE_H

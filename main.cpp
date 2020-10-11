@@ -16,28 +16,38 @@ int main(int argc, char *argv[])
 
     Engine* MainEngine = Engine::getInstance();
 
-    MainEngine->CreatePers("Clark","long description");
-    MainEngine->CreatePers("Rob","no");
+    MainEngine->CreatePers("Vlad","new description");
+    MainEngine->CreatePers("Juliy","new description");
+    MainEngine->CreatePers("Igor","new description");
+    //MainEngine->CreatePers("Rob","no");
 
-
+    /*
     MainEngine->CreateSkill(1,"Ability","Just Descript");
-    MainEngine->DeleteSkill(0);
-
-    MainEngine->CreateSkill(0,"Strength","Just Descript tup");
     MainEngine->CreateSkill(1,"Jump","Just Descript pop");
-
+    MainEngine->CreateSkill(0,"Strength","Just Descript tup");
+    */
+    /*
+    // Для 1-го персонажа
     // Добавление двух задач в 1 персонажа
-    MainEngine->CreateTask(1,-11,"Task1","Descript1",500,false);
-    MainEngine->CreateTask(1,-11,"Task11","Descript11",1000,false);
+    MainEngine->CreateTask(1,-11,"Task0","Descript1",500,true);
+    MainEngine->CreateTask(1,-11,"Task1","Descript11",1000,true);
 
     // Добавление 2-ух подзадач для 2-ой задачи и для 3-ой
-    MainEngine->CreateTask(1,1,"Task2", "Descript2",700,false);
-    MainEngine->CreateTask(1,1,"Task22", "Descript22",900,false);
-    MainEngine->CreateTask(1,2,"Task3","Descript3",800,false);
+    MainEngine->CreateTask(1,1,"Task2", "Descript2",700,true);
+    MainEngine->CreateTask(1,1,"Task3", "Descript22",900,true);
+    MainEngine->CreateTask(1,2,"Task4","Descript3",800,true);
+    MainEngine->CreateTask(1,2,"Task5","Descript5",800,true);
+
+    // Для 2-го скила (у о-го персонажа)
+    MainEngine->CreateTask(2,-11,"Task6", "Descript2",700,true);
+    MainEngine->CreateTask(2,6,"Task7", "Descript22",900,true);
+    MainEngine->CreateTask(2,6,"Task8","Descript3",800,true);
+    */
 
     MainEngine->TaskComplete(4);
     MainEngine->TaskComplete(3);
     MainEngine->TaskComplete(0);
+
     /*
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     QString path = "/home/vladburin/TaskMan/Database";

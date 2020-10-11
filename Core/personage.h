@@ -28,6 +28,8 @@ private:
 public:
     Personage(int id, std::string name, std::string description);
 
+    Personage(int id, std::string name, std::string description, int level, int scores_sum);
+
     void AddScores(int scores);
 
     int GetId();

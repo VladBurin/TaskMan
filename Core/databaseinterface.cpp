@@ -2,7 +2,6 @@
 
 DataBaseInterface::DataBaseInterface()
 {
-
 }
 
 DataBaseInterface::~DataBaseInterface()

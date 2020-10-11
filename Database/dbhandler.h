@@ -30,6 +30,11 @@ public:
     virtual void DeleteIncompTask(int id) final;
     virtual void DeleteCompTask(int id) final;
 
+    virtual std::vector<Personage> LoadPersonages() final;
+    virtual std::vector<Skill> LoadSkills() final;
+    virtual std::vector<TaskUnit> LoadIncompTasks() final;
+    virtual std::vector<TaskUnit> LoadCompTasks() final;
+    virtual std::vector<int> GetChildsBy(int parent_id) final;
 
 };
 

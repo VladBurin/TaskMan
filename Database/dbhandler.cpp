@@ -271,3 +271,176 @@ void DBhandler::DeleteCompTask(int id)
         return;
     }
 }
+
+std::vector<Personage> DBhandler::LoadPersonages()
+{
+    std::vector<Personage> result;
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("SELECT * FROM personages;");
+
+        Query.exec();
+        QSqlRecord rec = Query.record();
+
+        int id = 0;
+        std::string name;
+        std::string descript;
+        int level = 0;
+        int scores_sum = 0;
+
+        while(Query.next())
+        {
+            id = Query.value(rec.indexOf("id")).toInt();
+            name = Query.value(rec.indexOf("name")).toString().toUtf8().data();
+            descript = Query.value(rec.indexOf("description")).toString().toUtf8().data();
+            level = Query.value(rec.indexOf("level")).toInt();
+            scores_sum = Query.value(rec.indexOf("scores_sum")).toInt();
+            result.push_back(Personage(id,name,descript,level,scores_sum));
+        }
+
+        return result;
+    }
+
+}
+
+std::vector<Skill> DBhandler::LoadSkills()
+{
+    std::vector<Skill> result;
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("SELECT * FROM skills;");
+
+        Query.exec();
+        QSqlRecord rec = Query.record();
+
+        int id = 0;
+        std::string name;
+        std::string descript;
+        int level = 0;
+        int scores_sum = 0;
+        int pers_id = 0;
+
+        while(Query.next())
+        {
+            id = Query.value(rec.indexOf("id")).toInt();
+            name = Query.value(rec.indexOf("name")).toString().toUtf8().data();
+            descript = Query.value(rec.indexOf("description")).toString().toUtf8().data();
+            level = Query.value(rec.indexOf("level")).toInt();
+            scores_sum = Query.value(rec.indexOf("scores_sum")).toInt();
+            pers_id = Query.value(rec.indexOf("pers_id")).toInt();
+            result.push_back(Skill(id,pers_id,name,descript,level,scores_sum));
+        }
+
+        return result;
+    }
+}
+
+std::vector<TaskUnit> DBhandler::LoadIncompTasks()
+{
+    std::vector<TaskUnit> result;
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("SELECT * FROM incomplete_tasks;");
+
+        Query.exec();
+        QSqlRecord rec = Query.record();
+
+        int id = 0;
+        std::string name;
+        std::string descript;
+        int score_for_task = 0;
+        bool belong_skill_pers = false;
+        int belond_id = 0;
+        int parent_task = 0;
+
+        while(Query.next())
+        {
+            id = Query.value(rec.indexOf("id")).toInt();
+            name = Query.value(rec.indexOf("name")).toString().toUtf8().data();
+            descript = Query.value(rec.indexOf("description")).toString().toUtf8().data();
+            score_for_task = Query.value(rec.indexOf("score_for_task")).toInt();
+            belong_skill_pers = Query.value(rec.indexOf("belong_skill_person")).toBool();
+            belond_id = Query.value(rec.indexOf("belong_id")).toInt();
+            parent_task = Query.value(rec.indexOf("parent_task")).toInt();
+
+            result.push_back(TaskUnit(id,belond_id,parent_task,name,descript,score_for_task,belong_skill_pers));
+        }
+        return result;
+    }
+}
+
+std::vector<TaskUnit> DBhandler::LoadCompTasks()
+{
+    std::vector<TaskUnit> result;
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("SELECT * FROM complete_tasks;");
+
+        Query.exec();
+        QSqlRecord rec = Query.record();
+
+        int id = 0;
+        std::string name;
+        std::string descript;
+        int score_for_task = 0;
+        bool belong_skill_pers = false;
+        int belond_id = 0;
+        int parent_task = 0;
+
+        while(Query.next())
+        {
+            id = Query.value(rec.indexOf("id")).toInt();
+            name = Query.value(rec.indexOf("name")).toString().toUtf8().data();
+            descript = Query.value(rec.indexOf("description")).toString().toUtf8().data();
+            score_for_task = Query.value(rec.indexOf("score_for_task")).toInt();
+            belong_skill_pers = Query.value(rec.indexOf("belong_skill_person")).toBool();
+            belond_id = Query.value(rec.indexOf("belong_id")).toInt();
+            parent_task = Query.value(rec.indexOf("parent_task")).toInt();
+
+            result.push_back(TaskUnit(id,belond_id,parent_task,name,descript,score_for_task,belong_skill_pers));
+        }
+        return result;
+    }
+}
+
+std::vector<int> DBhandler::GetChildsBy(int parent_id)
+{
+    std::vector<int> result;
+
+    if(db.open())
+    {
+        QSqlQuery Query(db);
+        Query.prepare("SELECT id FROM complete_tasks WHERE parent_task = :id;");
+        Query.bindValue(":id", parent_id);
+
+        Query.exec();
+        QSqlRecord rec = Query.record();
+
+        int id = 0;
+
+        while(Query.next())
+        {
+            id = Query.value(rec.indexOf("id")).toInt();
+            result.push_back(id);
+        }
+
+        Query.prepare("SELECT id FROM incomplete_tasks WHERE parent_task = :id;");
+        Query.bindValue(":id", parent_id);
+
+        Query.exec();
+        rec = Query.record();
+
+        while(Query.next())
+        {
+            id = Query.value(rec.indexOf("id")).toInt();
+            result.push_back(id);
+        }
+
+        return result;
+    }
+
+}

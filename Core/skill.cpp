@@ -9,6 +9,15 @@ Skill::Skill(int id, int pers_id, std::string name, std::string description):
 
 }
 
+
+Skill::Skill(int id, int pers_id, std::string name, std::string description, int level, int scores_sum):
+            Id(id), PersId(pers_id),
+            Name(name), Description(description), Level(level),
+            ScoresSum(scores_sum)
+{
+
+}
+
 void Skill::AddScores(int scores)
 {
     ScoresSum+=scores;

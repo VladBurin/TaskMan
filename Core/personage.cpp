@@ -8,6 +8,13 @@ Personage::Personage(int id, std::string name, std::string description):
 
 }
 
+Personage::Personage(int id, std::string name, std::string description, int level, int scores_sum):
+                    Id(id), Name(name), Description(description),
+                    Level(level), ScoresSum(scores_sum)
+{
+
+}
+
 void Personage::AddScores(int scores)
 {
     ScoresSum+=scores;
