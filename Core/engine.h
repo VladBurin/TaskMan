@@ -68,6 +68,12 @@ public:
 
     bool CheckChildCompleted(int id);
 
+    std::vector<int> GetPersIds();
+
+    std::vector<int> GetSkillsByPersId(int id);
+
+    std::vector<int> GetIncompTasksByPersId(int id);
+
     Personage* GetPersById(int id);
 
     Skill* GetSkillById(int id);

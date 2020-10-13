@@ -1,27 +1,36 @@
-//#include "mainwindow.h"
 
-//#include <QApplication>
+#include <QApplication>
 #include <iostream>
 #include "Core/engine.h"
 #include <QtSql>
 
+#include "../GUI/personagemenu.h"
+#include "../GUI/taskform.h"
+#include "../GUI/mainwindow.h"
+
 int main(int argc, char *argv[])
 {
-     //QApplication a(argc, argv);
+     QApplication a(argc, argv);
 
-//    MainWindow w;
-//    w.show();
+
 
 //    return a.exec();
 
     Engine* MainEngine = Engine::getInstance();
 
+    TaskForm w(MainEngine,1);
+    //PersonageMenu w(MainEngine);
+    w.show();
+
+
+
+    /*
     MainEngine->CreatePers("Vlad","new description");
     MainEngine->CreatePers("Juliy","new description");
     MainEngine->CreatePers("Igor","new description");
     //MainEngine->CreatePers("Rob","no");
 
-    /*
+
     MainEngine->CreateSkill(1,"Ability","Just Descript");
     MainEngine->CreateSkill(1,"Jump","Just Descript pop");
     MainEngine->CreateSkill(0,"Strength","Just Descript tup");
@@ -42,11 +51,12 @@ int main(int argc, char *argv[])
     MainEngine->CreateTask(2,-11,"Task6", "Descript2",700,true);
     MainEngine->CreateTask(2,6,"Task7", "Descript22",900,true);
     MainEngine->CreateTask(2,6,"Task8","Descript3",800,true);
-    */
+
 
     MainEngine->TaskComplete(4);
     MainEngine->TaskComplete(3);
     MainEngine->TaskComplete(0);
+    */
 
     /*
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
@@ -88,5 +98,5 @@ int main(int argc, char *argv[])
     //Personage* curr_pers = MainEngine->GetPersById(0);
     */
 
-    return 0;
+    return a.exec();
 }

@@ -3,20 +3,17 @@
 # Project created by QtCreator 2020-10-01T00:59:08
 #
 #-------------------------------------------------
-QT += core
-QT -= gui
 
-CONFIG += c++11 console
 CONFIG -= app_bundle
-#QT += core #gui
-#QT -= gui
+QT += core gui
+
 QT += sql
 #CONFIG += console
-#greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = TaskMan
 TEMPLATE = app
-#CONFIG += c++17
+CONFIG += c++17
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -32,26 +29,33 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #CONFIG += c++11
 
 SOURCES += \
-    Core/databaseinterface.cpp \
+        Core/databaseinterface.cpp \
         Core/personage.cpp \
         Core/skill.cpp \
         Core/taskunit.cpp \
         Core/engine.cpp \
-    Database/dbhandler.cpp \
-        main.cpp \
-        #mainwindow.cpp
+        Database/dbhandler.cpp \
+        GUI/mainwindow.cpp \
+        GUI/personagemenu.cpp \
+        GUI/taskform.cpp \
+        main.cpp
 
 HEADERS += \
-    Core/databaseinterface.h \
+        Core/databaseinterface.h \
         Core/personage.h \
         Core/skill.h \
         Core/taskunit.h \
         Core/engine.h \
- \        #mainwindow.h
-    Database/dbhandler.h
+        Database/dbhandler.h \
+        GUI/mainwindow.h \
+        GUI/personagemenu.h \
+        GUI/taskform.h
 
-#FORMS += \
-#        mainwindow.ui
+FORMS += \
+        GUI/mainwindow.ui \
+        GUI/personagemenu.ui \
+        GUI/taskform.ui
+
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -218,6 +218,36 @@ void Engine::TaskComplete(int id)
         TaskComplete(par_id);
 }
 
+std::vector<int> Engine::GetPersIds()
+{
+    std::vector<int> result;
+    for(auto it = Personages.begin(); it!=Personages.end(); ++it)
+    {
+        result.push_back((*it).first);
+    }
+    return result;
+}
+
+std::vector<int> Engine::GetSkillsByPersId(int id)
+{
+    std::vector<int> result;
+
+    for(auto it = Skills.begin(); it != Skills.end(); ++it)
+    {
+        Skill skill = (*it).second;
+        if(skill.GetPersId() == id)
+            result.push_back(skill.GetId());
+    }
+    return result;
+}
+
+std::vector<int> Engine::GetIncompTasksByPersId(int id)
+{
+
+}
+
+
+
 Personage* Engine::GetPersById(int id)
 {
     auto it = Personages.find(id);
