@@ -7,10 +7,10 @@ class PersonageButton : public QPushButton
 {
     Q_OBJECT
 public:
-    PersonageButton(int digit, QWidget *parent);
+    PersonageButton(int id, std::string name, QWidget *parent = nullptr);
     ~PersonageButton();
 signals:
-       void clicked(int digit);
+       void clicked(int id);
 
 private slots:
     void reemitClicked();

@@ -14,24 +14,22 @@ TaskForm::TaskForm(Engine *engine, int pers_id, MainWindow* main_wind, QWidget *
     // Get pers skills
     std::vector<int> skills = Eng->GetSkillsByPersId(PersId);
 
-    ui->comboBox->addItem("Tasks",-11);
+    ui->comboboxSkills->addItem("Tasks",-11);
 
     for(auto it = skills.begin(); it != skills.end(); ++it)
     {
-        ui->comboBox->addItem(QString::fromStdString(Eng->GetSkillById(*it)->GetName()),
+        ui->comboboxSkills->addItem(QString::fromStdString(Eng->GetSkillById(*it)->GetName()),
                              Eng->GetSkillById(*it)->GetId());
     }
 
-    ui->comboBox->setCurrentIndex(0);
-
-    ui->treeWidget->clear();
+    ui->comboboxSkills->setCurrentIndex(0);
 
     std::vector<int> tasks = Eng->GetHighIncompTasksByPersId(PersId);
 
     for(auto t = tasks.begin(); t != tasks.end(); ++t)
     {
         //верхний уровень задач
-        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeTasks);
         item->setExpanded(true);
         item->setData(0,Qt::UserRole,(*t));
         item->setText(0, Eng->GetTaskById(*t)->GetName().c_str());
@@ -45,7 +43,8 @@ TaskForm::TaskForm(Engine *engine, int pers_id, MainWindow* main_wind, QWidget *
         }
     }
 
-     connect(ui->pushButton_2, &QPushButton::clicked, main_wind, &MainWindow::CreatePersForm);
+    connect(ui->buttonBackToPers, &QPushButton::clicked, main_wind, &MainWindow::CreatePersForm);
+
 }
 
 TaskForm::~TaskForm()
@@ -69,20 +68,20 @@ void TaskForm::CreateChilds(int task_id, QTreeWidgetItem* par)
     }
 }
 
-void TaskForm::on_comboBox_activated(int index)
+void TaskForm::on_comboboxSkills_activated(int index)
 {
-    int skill_id = ui->comboBox->currentData().toInt();
+    int skill_id = ui->comboboxSkills->currentData().toInt();
 
     if(skill_id == -11)
     {
-        ui->treeWidget->clear();
+        ui->treeTasks->clear();
 
         std::vector<int> tasks = Eng->GetHighIncompTasksByPersId(PersId);
 
         for(auto t = tasks.begin(); t != tasks.end(); ++t)
         {
             //верхний уровень задач
-            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeTasks);
             item->setExpanded(true);
             item->setData(0,Qt::UserRole,(*t));
             item->setText(0, Eng->GetTaskById(*t)->GetName().c_str());
@@ -98,14 +97,14 @@ void TaskForm::on_comboBox_activated(int index)
     }
     else
     {
-        ui->treeWidget->clear();
+        ui->treeTasks->clear();
 
         std::vector<int> tasks = Eng->GetHighIncompTasksBySkillId(skill_id);
 
         for(auto t = tasks.begin(); t != tasks.end(); ++t)
         {
             //верхний уровень задач
-            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
+            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeTasks);
             item->setExpanded(true);
             item->setData(0,Qt::UserRole,(*t));
             item->setText(0, Eng->GetTaskById(*t)->GetName().c_str());
@@ -121,7 +120,4 @@ void TaskForm::on_comboBox_activated(int index)
 
 }
 
-void TaskForm::on_pushButton_2_clicked()
-{
 
-}

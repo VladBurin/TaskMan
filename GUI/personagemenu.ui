@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>547</width>
+    <height>462</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,16 +15,108 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QGridLayout" name="gridLayout"/>
-   </item>
-   <item>
-    <widget class="QPushButton" name="pushButton">
-     <property name="text">
-      <string>PushButton</string>
+    <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,2">
+     <property name="spacing">
+      <number>10</number>
      </property>
-    </widget>
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+     <property name="leftMargin">
+      <number>5</number>
+     </property>
+     <property name="topMargin">
+      <number>5</number>
+     </property>
+     <property name="rightMargin">
+      <number>5</number>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="vertLayoutPersChoose" stretch="0,0">
+       <item>
+        <widget class="QLabel" name="LabelPerson">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Your characters</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayoutPers"/>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="vertLayoutDescription" stretch="0,0">
+       <item>
+        <widget class="QLabel" name="LabelAbout">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>About</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="textDescription">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="overwriteMode">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
   </layout>
+  <action name="actionCreate_New_Pers">
+   <property name="text">
+    <string>Create New Pers</string>
+   </property>
+   <property name="toolTip">
+    <string>Create New Pers</string>
+   </property>
+  </action>
+  <action name="actionDelete_Pers">
+   <property name="text">
+    <string>Delete Pers</string>
+   </property>
+  </action>
+  <action name="actionEdit_Pers">
+   <property name="text">
+    <string>Edit Pers</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit Pers</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

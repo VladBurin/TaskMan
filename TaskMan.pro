@@ -62,10 +62,7 @@ HEADERS += \
 FORMS += \
         GUI/mainwindow.ui \
         GUI/personagemenu.ui \
-        GUI/personcreatedialog.ui \
-        GUI/taskcreatedialog.ui \
-        GUI/taskform.ui \
-        GUI/skillcreatedialog.ui
+        GUI/taskform.ui
 
 
 # Default rules for deployment.

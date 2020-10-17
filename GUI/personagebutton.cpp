@@ -1,15 +1,16 @@
 #include "personagebutton.h"
 
-PersonageButton::PersonageButton(int digit, QWidget *parent)
-                : QPushButton(parent)
+PersonageButton::PersonageButton(int id, std::string name, QWidget *parent)
+                : QPushButton(parent),
+                  PersId(id)
 {
-    PersId = digit;
-    setText(QString::number(PersId));
+    setText(name.c_str());
     connect(this, SIGNAL(clicked()), this, SLOT(reemitClicked()));
 }
 
 PersonageButton::~PersonageButton()
 {
+
 }
 
 void PersonageButton::reemitClicked()

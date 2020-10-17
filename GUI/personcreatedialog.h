@@ -2,10 +2,13 @@
 #define PERSONCREATEDIALOG_H
 
 #include <QDialog>
+#include <QLineEdit>
+#include <QTextEdit>
+#include <QLabel>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
-namespace Ui {
-class PersonCreateDialog;
-}
 
 class PersonCreateDialog : public QDialog
 {
@@ -15,8 +18,18 @@ public:
     explicit PersonCreateDialog(QWidget *parent = nullptr);
     ~PersonCreateDialog();
 
+    std::string GetPersName();
+    std::string GetPersDesc();
+
 private:
-    Ui::PersonCreateDialog *ui;
+    QLabel* EnterNameLabel;
+    QLineEdit* PersName;
+
+    QLabel* EnterDescLabel;
+    QTextEdit* PersDescript;
+
+    QPushButton* OkButton;
+    QPushButton* CancelButton;
 };
 
 #endif // PERSONCREATEDIALOG_H
