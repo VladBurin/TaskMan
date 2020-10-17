@@ -60,6 +60,7 @@ Engine::Engine()
 
 }
 
+// Creatin
 void Engine::CreatePers(std::string name, std::string description)
 {
     int id = 0;
@@ -130,7 +131,7 @@ void Engine::CreateTask(int belong_id, int parent, std::string name,
         if(!skill)
             return;
 
-        IncompleteTasks.insert(std::make_pair(id,
+        IncompletedTasks.insert(std::make_pair(id,
                                               TaskUnit(id,belong_id,parent,name,description,scores,belong_skill_pers)));
         TaskUnit* task = GetTaskById(parent);
         if(task)
@@ -145,7 +146,7 @@ void Engine::CreateTask(int belong_id, int parent, std::string name,
         if(!pers)
             return;
 
-        IncompleteTasks.insert(std::make_pair(id,
+        IncompletedTasks.insert(std::make_pair(id,
                                               TaskUnit(id,belong_id,parent,name,description,scores,belong_skill_pers)));
 
         TaskUnit* task = GetTaskById(parent);
@@ -160,12 +161,67 @@ void Engine::DeletePers(int id)
 {
     Personages.erase(id);
     DB->DeletePersonage(id);
+    free_pers_ids.push_back(id);
+
+    std::vector<int> inc_tasks_of_pers = GetAllIncompTasksByPersId(id);
+
+    for(auto it = inc_tasks_of_pers.begin(); it != inc_tasks_of_pers.end(); ++it)
+    {
+        DeleteIncompletedTask((*it), true);
+    }
+
+    std::vector<int> com_tasks_of_pers = GetAllCompTasksByPersId(id);
+
+    for(auto it = com_tasks_of_pers.begin(); it != com_tasks_of_pers.end(); ++it)
+    {
+        DeleteCompletedTask((*it), true);
+    }
+
+    std::vector<int> skills_of_pers = GetSkillsByPersId(id);
+
+    for(auto it = skills_of_pers.begin(); it != skills_of_pers.end(); ++it)
+    {
+        DeleteSkill((*it));
+    }
+
 }
 
 void Engine::DeleteSkill(int id)
 {
     Skills.erase(id);
     DB->DeleteSkill(id);
+    free_skills_ids.push_back(id);
+
+    std::vector<int> inc_tasks_of_skill = GetAllIncompTasksBySkillId(id);
+
+    for(auto it = inc_tasks_of_skill.begin(); it != inc_tasks_of_skill.end(); ++it)
+    {
+        DeleteIncompletedTask((*it), true);
+    }
+
+    std::vector<int> com_tasks_of_skill = GetAllCompTasksBySkillId(id);
+
+    for(auto it = com_tasks_of_skill.begin(); it != com_tasks_of_skill.end(); ++it)
+    {
+        DeleteCompletedTask((*it), true);
+    }
+
+}
+
+void Engine::DeleteIncompletedTask(int id, bool task_killed)
+{
+    IncompletedTasks.erase(id);
+    DB->DeleteIncompTask(id);
+    if(task_killed)
+        free_tasks_ids.push_back(id);
+}
+
+void Engine::DeleteCompletedTask(int id, bool task_killed)
+{
+    CompletedTasks.erase(id);
+    DB->DeleteCompTask(id);
+    if(task_killed)
+        free_tasks_ids.push_back(id);
 }
 
 bool Engine::CheckChildCompleted(int id)
@@ -178,10 +234,10 @@ bool Engine::CheckChildCompleted(int id)
 
     for(auto it = childs.begin(); it!=childs.end(); ++it)
     {
-        auto it_1 = CompleteTasks.find(*it);
+        auto it_1 = CompletedTasks.find(*it);
 
         // Если задача не в завершенных
-        if(it_1 == CompleteTasks.end())
+        if(it_1 == CompletedTasks.end())
             return false;
     }
     return true;
@@ -194,10 +250,10 @@ void Engine::TaskComplete(int id)
         return;
 
     // Добавление в выполненные и удаление из невыполненных
-    CompleteTasks.insert(std::make_pair(id, *complete));
+    CompletedTasks.insert(std::make_pair(id, *complete));
     DB->AddCompTask(complete);
-    IncompleteTasks.erase(id);
-    DB->DeleteIncompTask(id);
+
+    DeleteIncompletedTask(id);
 
     // Добавляем опыт кому надо
     bool belong = complete->GetBelongSkillPers();
@@ -241,15 +297,95 @@ std::vector<int> Engine::GetSkillsByPersId(int id)
     return result;
 }
 
-std::vector<int> Engine::GetIncompTasksByPersId(int id)
-{
 
+std::vector<int> Engine::GetAllIncompTasksByPersId(int id)
+{
+    std::vector<int> result;
+
+    for(auto it = IncompletedTasks.begin(); it != IncompletedTasks.end(); ++it)
+    {
+        TaskUnit task = (*it).second;
+
+        if(!task.GetBelongSkillPers() && (task.GetBelongId()==id))
+        {
+            result.push_back(task.GetId());
+        }
+    }
+    return result;
 }
+
+std::vector<int> Engine::GetAllCompTasksByPersId(int id)
+{
+    std::vector<int> result;
+
+    for(auto it = CompletedTasks.begin(); it != CompletedTasks.end(); ++it)
+    {
+        TaskUnit task = (*it).second;
+
+        if(!task.GetBelongSkillPers() && (task.GetBelongId()==id))
+        {
+            result.push_back(task.GetId());
+        }
+    }
+    return result;
+}
+
+std::vector<int> Engine::GetAllTasksByPersId(int id)
+{
+    std::vector<int> result = GetAllCompTasksByPersId(id);
+    std::vector<int> result2 = GetAllIncompTasksByPersId(id);
+
+    result.insert( result.end(), result2.begin(), result2.end());
+
+    return result;
+}
+
+
+std::vector<int> Engine::GetAllIncompTasksBySkillId(int id)
+{
+    std::vector<int> result;
+
+    for(auto it = IncompletedTasks.begin(); it != IncompletedTasks.end(); ++it)
+    {
+        TaskUnit task = (*it).second;
+
+        if(task.GetBelongSkillPers() && (task.GetBelongId()==id))
+        {
+            result.push_back(task.GetId());
+        }
+    }
+    return result;
+}
+
+std::vector<int> Engine::GetAllCompTasksBySkillId(int id)
+{
+    std::vector<int> result;
+
+    for(auto it = CompletedTasks.begin(); it != CompletedTasks.end(); ++it)
+    {
+        TaskUnit task = (*it).second;
+
+        if(task.GetBelongSkillPers() && (task.GetBelongId()==id))
+        {
+            result.push_back(task.GetId());
+        }
+    }
+    return result;
+}
+
+std::vector<int> Engine::GetAllTasksBySkillId(int id)
+{
+    std::vector<int> result = GetAllCompTasksBySkillId(id);
+    std::vector<int> result2 = GetAllIncompTasksBySkillId(id);
+
+    result.insert( result.end(), result2.begin(), result2.end());
+}
+
 
 std::vector<int> Engine::GetHighIncompTasksByPersId(int id)
 {
     std::vector<int> result;
-    for(auto it = IncompleteTasks.begin(); it != IncompleteTasks.end(); ++it)
+    for(auto it = IncompletedTasks.begin(); it != IncompletedTasks.end(); ++it)
     {
         if(!(*it).second.GetBelongSkillPers()
                 && ((*it).second.GetBelongId()==id)
@@ -264,7 +400,7 @@ std::vector<int> Engine::GetHighIncompTasksByPersId(int id)
 std::vector<int> Engine::GetHighIncompTasksBySkillId(int id)
 {
     std::vector<int> result;
-    for(auto it = IncompleteTasks.begin(); it != IncompleteTasks.end(); ++it)
+    for(auto it = IncompletedTasks.begin(); it != IncompletedTasks.end(); ++it)
     {
         if((*it).second.GetBelongSkillPers()
                 && ((*it).second.GetBelongId()==id)
@@ -299,9 +435,9 @@ Skill* Engine::GetSkillById(int id)
 
 TaskUnit* Engine::GetTaskById(int id)
 {
-    auto it = IncompleteTasks.find(id);
+    auto it = IncompletedTasks.find(id);
 
-    if(it != IncompleteTasks.end())
+    if(it != IncompletedTasks.end())
         return &(it->second);
     else
         return nullptr;
@@ -427,7 +563,7 @@ void Engine::LoadTasks()
 
     for(auto it = incomp_tasks.begin(); it != incomp_tasks.end(); ++it)
     {
-        IncompleteTasks.insert(std::make_pair((*it).GetId(),*it));
+        IncompletedTasks.insert(std::make_pair((*it).GetId(),*it));
         TaskUnit* task = GetTaskById((*it).GetId());
 
         // Adding childs
@@ -443,7 +579,7 @@ void Engine::LoadTasks()
 
     for(auto it = comp_tasks.begin(); it != comp_tasks.end(); ++it)
     {
-        CompleteTasks.insert(std::make_pair((*it).GetId(),*it));
+        CompletedTasks.insert(std::make_pair((*it).GetId(),*it));
         TaskUnit* task = GetTaskById((*it).GetId());
 
         // Adding childs
