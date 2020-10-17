@@ -9,51 +9,53 @@ class TaskUnit
 {
 
 private:
-    /// Идентификатор задачи
+    /// Identifier
     int Id;
 
-    /// Имя задачи
+    /// Name (short description)
     std::string Name;
 
-    /// Описание задачи
+    /// Desription
     std::string Description;
 
-    /// Общий опыт
+    /// Scores for this task
     int ScoresForTask;
 
-    /// Принадлежит ли задача Скилу либо Персонажу
+    /// Whether the task belongs to Skill or the Personage
     /// true  - to Skill
     /// false - to Personage
     bool BelongSkillOrPers;
 
-    /// Идентификатор либо персонажа либо скила
+    /// Identifier of thing this task belong to (Skill or Personage)
     int BelongId;
 
-    /// Задача родитель
+    /// Parent task
     int Parent;
 
-    /// Задачи - дети
+    /// Tasks - children of this task
     std::vector<int> ChildTasks;
 
 public:
     TaskUnit(int id, int belong_id, int par_id, std::string name, std::string description, int scores, bool belong_skill_pers);
 
-    int GetId();
+    /// Getters
+    const int GetId() const;
 
-    std::string GetName();
+    const std::string& GetName() const;
 
-    std::string GetDescript();
+    const std::string& GetDescript() const;
 
-    bool GetBelongSkillPers();
+    const bool GetBelongSkillPers() const;
 
-    int GetBelongId();
+    const int GetBelongId() const;
 
-    int GetParentId();
+    const int GetParentId() const;
 
-    int GetScoresForTask();
+    const int GetScoresForTask() const;
 
-    std::vector<int>& GetChildTasksId();
+    const std::vector<int>& GetChildTasksId() const;
 
+    /// Adding child identifier
     void AddChild(int id);
 };
 

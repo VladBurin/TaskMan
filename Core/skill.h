@@ -10,41 +10,45 @@ class Skill
 
 private:
 
-    /// Идентификатор скилла
+    /// Identifier
     int Id;
 
-    /// Имя скилла
+    /// Name
     std::string Name;
 
-    /// Описание скилла
+    /// Description
     std::string Description;
 
-    /// Уровень скилла
+    /// Level
     int Level;
 
-    /// Общий опыт
+    /// Su of scores
     int ScoresSum;
 
-    /// Идентификатор персонажа
+    /// Identifier of personage to whom the skill belongs
     int PersId;
 
 public:
-    Skill(int id, int pers_id, std::string name, std::string description);
-    Skill(int id, int pers_id, std::string name, std::string description, int level, int scores_sum);
+    /// Skill can be loaded (with exact values of level, scores_sum) or created new one with 0 level and scores_sum
+    Skill(int id, int pers_id, std::string name, std::string description, int level =0 , int scores_sum = 0);
 
+    /// Adding scores
+    /// ScoresSum increase accurately
+    /// Level may rise
     void AddScores(int scores);
 
-    int GetId();
+    /// Getters
+    const int GetId() const;
 
-    std::string GetName();
+    const std::string& GetName() const;
 
-    std::string GetDescript();
+    const std::string& GetDescript() const;
 
-    int GetLevel();
+    const int GetLevel() const;
 
-    int GetScoresSum();
+    const int GetScoresSum() const;
 
-    int GetPersId();
+    const int GetPersId() const;
 };
 
 #endif // SKILL_H

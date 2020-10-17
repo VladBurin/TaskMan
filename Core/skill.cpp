@@ -1,15 +1,5 @@
 #include "skill.h"
 
-
-Skill::Skill(int id, int pers_id, std::string name, std::string description):
-            Id(id), PersId(pers_id),
-            Name(name), Description(description), Level(0),
-            ScoresSum(0)
-{
-
-}
-
-
 Skill::Skill(int id, int pers_id, std::string name, std::string description, int level, int scores_sum):
             Id(id), PersId(pers_id),
             Name(name), Description(description), Level(level),
@@ -22,11 +12,12 @@ void Skill::AddScores(int scores)
 {
     ScoresSum+=scores;
 
-    // »щем текущий уровень
+    // Finding the current level
     int scoreLevel=0;
     int i = 0;
     while(1)
     {
+        // if ScoresSum between sum of scores for two levels
         if(ScoresSum>=scoreLevel && ScoresSum <= scoreLevel+ScoresForLevel[i])
         {
             Level = i;
@@ -38,32 +29,33 @@ void Skill::AddScores(int scores)
 
 }
 
-int Skill::GetId()
+//Getters
+const int Skill::GetId() const
 {
     return Id;
 }
 
-std::string Skill::GetName()
+const std::string& Skill::GetName() const
 {
     return Name;
 }
 
-std::string Skill::GetDescript()
+const std::string& Skill::GetDescript() const
 {
     return Description;
 }
 
-int Skill::GetScoresSum()
+const int Skill::GetScoresSum() const
 {
     return ScoresSum;
 }
 
-int Skill::GetLevel()
+const int Skill::GetLevel() const
 {
     return Level;
 }
 
-int Skill::GetPersId()
+const int Skill::GetPersId() const
 {
     return PersId;
 }

@@ -14,42 +14,43 @@ void TaskUnit::AddChild(int id)
     ChildTasks.push_back(id);
 }
 
-std::vector<int>& TaskUnit::GetChildTasksId()
+// Getters
+const std::vector<int>& TaskUnit::GetChildTasksId() const
 {
     return ChildTasks;
 }
 
-int TaskUnit::GetId()
+const int TaskUnit::GetId() const
 {
     return Id;
 }
 
-std::string TaskUnit::GetName()
+const std::string& TaskUnit::GetName() const
 {
     return Name;
 }
 
-std::string TaskUnit::GetDescript()
+const std::string& TaskUnit::GetDescript() const
 {
     return Description;
 }
 
-int TaskUnit::GetParentId()
+const int TaskUnit::GetParentId() const
 {
     return Parent;
 }
 
-bool TaskUnit::GetBelongSkillPers()
+const bool TaskUnit::GetBelongSkillPers() const
 {
     return BelongSkillOrPers;
 }
 
-int TaskUnit::GetScoresForTask()
+const int TaskUnit::GetScoresForTask() const
 {
     return ScoresForTask;
 }
 
-int TaskUnit::GetBelongId()
+const int TaskUnit::GetBelongId() const
 {
     return BelongId;
 }

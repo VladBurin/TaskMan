@@ -10,37 +10,40 @@ extern int ScoresForLevel[5];
 class Personage
 {
 private:
-    /// Идентификатор персонажа
+    /// Identifier
     int Id;
 
-    /// Имя персонажа
+    /// Name
     std::string Name;
 
-    /// Описание персонажа
+    /// Description
     std::string Description;
 
-    /// Уровень персонажа
+    /// Level
     int Level;
 
-    /// Общий опыт
+    /// Sum of scores
     int ScoresSum;
 
 public:
-    Personage(int id, std::string name, std::string description);
+    /// Personage can be loaded (with exact values of level, scores_sum) or created new one with 0 level and scores_sum
+    Personage(int id, std::string name, std::string description, int level = 0, int scores_sum = 0);
 
-    Personage(int id, std::string name, std::string description, int level, int scores_sum);
-
+    /// Adding scores
+    /// ScoresSum increase accurately
+    /// Level may rise
     void AddScores(int scores);
 
-    int GetId();
+    ///Getters
+    const int GetId() const;
 
-    std::string GetName();
+    const std::string& GetName() const;
 
-    std::string GetDescript();
+    const std::string& GetDescript() const;
 
-    int GetLevel();
+    const int GetLevel() const;
 
-    int GetScoresSum();
+    const int GetScoresSum() const;
 };
 
 #endif // PERSONAGE_H

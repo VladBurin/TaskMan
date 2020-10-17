@@ -27,7 +27,6 @@ void MainWindow::CreateTaskForm(int id)
     setCentralWidget(TaskFormIns);
 }
 
-
 void MainWindow::CreatePersForm()
 {
     delete TaskFormIns;
