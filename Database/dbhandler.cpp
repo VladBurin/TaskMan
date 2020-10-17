@@ -407,7 +407,7 @@ std::vector<TaskUnit> DBhandler::LoadCompTasks()
     }
 }
 
-std::vector<int> DBhandler::GetChildsBy(int parent_id)
+std::vector<int> DBhandler::GetChildsById(int parent_id)
 {
     std::vector<int> result;
 

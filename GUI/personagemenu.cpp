@@ -1,20 +1,25 @@
 #include "personagemenu.h"
 #include "ui_personagemenu.h"
+#include "mainwindow.h"
 
-PersonageMenu::PersonageMenu(Engine *engine, QWidget *parent) :
-    Engine_instance(engine),
+PersonageMenu::PersonageMenu(Engine *engine, MainWindow* main_wind, QWidget *parent) :
     QWidget(parent),
+    MainWind(main_wind),
+    Eng(engine),
     ui(new Ui::PersonageMenu)
 {
     ui->setupUi(this);
 
-    std::vector<int> personages = Engine_instance->GetPersIds();
+    // Get all existing personages
+    std::vector<int> personages = Eng->GetPersIds();
 
     std::vector<QPushButton*> pers;
 
     for(auto it = personages.begin(); it != personages.end(); ++it)
     {
-        QPushButton* butt = new QPushButton(QString::fromStdString(Engine_instance->GetPersById(*it)->GetName()));
+        //  нопка с вшитым "ID" внутри
+        QPushButton* butt = new QPushButton(QString::fromStdString(Eng->GetPersById(*it)->GetName()));
+        butt->setProperty("pers_id", Eng->GetPersById(*it)->GetId());
         pers.push_back(butt);
     }
 
@@ -35,7 +40,9 @@ PersonageMenu::PersonageMenu(Engine *engine, QWidget *parent) :
         }
     }
 
+    //ui->pushButton->setProperty("id",0);
 
+    connect(ui->pushButton, &QPushButton::clicked, main_wind, &MainWindow::CreateTaskForm);
 
 }
 

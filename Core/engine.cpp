@@ -246,6 +246,35 @@ std::vector<int> Engine::GetIncompTasksByPersId(int id)
 
 }
 
+std::vector<int> Engine::GetHighIncompTasksByPersId(int id)
+{
+    std::vector<int> result;
+    for(auto it = IncompleteTasks.begin(); it != IncompleteTasks.end(); ++it)
+    {
+        if(!(*it).second.GetBelongSkillPers()
+                && ((*it).second.GetBelongId()==id)
+                && (*it).second.GetParentId() == -11)
+        {
+            result.push_back((*it).first);
+        }
+    }
+    return result;
+}
+
+std::vector<int> Engine::GetHighIncompTasksBySkillId(int id)
+{
+    std::vector<int> result;
+    for(auto it = IncompleteTasks.begin(); it != IncompleteTasks.end(); ++it)
+    {
+        if((*it).second.GetBelongSkillPers()
+                && ((*it).second.GetBelongId()==id)
+                && (*it).second.GetParentId() == -11)
+        {
+            result.push_back((*it).first);
+        }
+    }
+    return result;
+}
 
 
 Personage* Engine::GetPersById(int id)
@@ -402,7 +431,7 @@ void Engine::LoadTasks()
         TaskUnit* task = GetTaskById((*it).GetId());
 
         // Adding childs
-        std::vector<int> childs = DB->GetChildsBy((*it).GetId());
+        std::vector<int> childs = DB->GetChildsById((*it).GetId());
         for(auto child = childs.begin(); child != childs.end(); ++child)
         {
             task->AddChild(*child);
@@ -418,7 +447,7 @@ void Engine::LoadTasks()
         TaskUnit* task = GetTaskById((*it).GetId());
 
         // Adding childs
-        std::vector<int> childs = DB->GetChildsBy((*it).GetId());
+        std::vector<int> childs = DB->GetChildsById((*it).GetId());
         for(auto child = childs.begin(); child != childs.end(); ++child)
         {
             task->AddChild(*child);

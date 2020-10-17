@@ -58,6 +58,7 @@ public:
     void CreateTask(int belong_id, int parent, std::string name,
                     std::string description, int scores, bool belong_skill_pers);
 
+    // TODO добавить удаление скилов и задач, принадлежащий персонажу
     void DeletePers(int id);
 
     void DeleteSkill(int id);
@@ -73,6 +74,10 @@ public:
     std::vector<int> GetSkillsByPersId(int id);
 
     std::vector<int> GetIncompTasksByPersId(int id);
+
+    std::vector<int> GetHighIncompTasksByPersId(int id);
+
+    std::vector<int> GetHighIncompTasksBySkillId(int id);
 
     Personage* GetPersById(int id);
 

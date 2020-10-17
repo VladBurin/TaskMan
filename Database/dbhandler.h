@@ -34,7 +34,7 @@ public:
     virtual std::vector<Skill> LoadSkills() final;
     virtual std::vector<TaskUnit> LoadIncompTasks() final;
     virtual std::vector<TaskUnit> LoadCompTasks() final;
-    virtual std::vector<int> GetChildsBy(int parent_id) final;
+    virtual std::vector<int> GetChildsById(int parent_id) final;
 
 };
 

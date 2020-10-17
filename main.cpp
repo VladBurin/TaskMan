@@ -18,12 +18,42 @@ int main(int argc, char *argv[])
 
     Engine* MainEngine = Engine::getInstance();
 
-    TaskForm w(MainEngine,1);
-    //PersonageMenu w(MainEngine);
-    w.show();
+    MainWindow m(MainEngine);
+
+    m.show();
+
+    /*
+    MainEngine->CreatePers("Vlad","new description");
+
+    MainEngine->CreateSkill(0,"Jump","Just Descript pop");
+    MainEngine->CreateSkill(0,"Strength","Just Descript tup");
+
+    // задачи персонажа
+    MainEngine->CreateTask(0,-11,"Task0","Descript0",500,false);
+    MainEngine->CreateTask(0,-11,"Task1","Descript1",500,false);
+    MainEngine->CreateTask(0, 0, "Task01","Descript01",500,false);
+    MainEngine->CreateTask(0, 0, "Task02","Descript02",500,false);
 
 
+    // задачи Strength
+    MainEngine->CreateTask(1, -11,"Gask0","Descript0",500,true);
+    MainEngine->CreateTask(1, -11,"Gask1","Descript1",500,true);
+    MainEngine->CreateTask(1, -11, "Gask2","Descript01",500,true);
 
+
+    // задачи Jump
+    MainEngine->CreateTask(0, -11,"Jump0","Descript0",500,true);
+    MainEngine->CreateTask(0, -11,"Jump1","Descript1",500,true);
+
+    MainEngine->CreateTask(0, -11,"Jump2","Descript01",500,true); //9
+        MainEngine->CreateTask(0, 9,"Jump21","Descript1",500,true); //10
+            MainEngine->CreateTask(0, 10,"Jump211","Descript1",500,true);
+            MainEngine->CreateTask(0, 10,"Jump212","Descript01",500,true);
+        MainEngine->CreateTask(0, 9,"Jump22","Descript01",500,true); //13
+            MainEngine->CreateTask(0, 13,"Jump221","Descript1",500,true);
+            MainEngine->CreateTask(0, 13,"Jump222","Descript01",500,true);
+            MainEngine->CreateTask(0, 13,"Jump223","Descript1",500,true);
+    */
     /*
     MainEngine->CreatePers("Vlad","new description");
     MainEngine->CreatePers("Juliy","new description");

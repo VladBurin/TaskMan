@@ -35,7 +35,7 @@ public:
     virtual std::vector<TaskUnit> LoadIncompTasks() = 0;
     virtual std::vector<TaskUnit> LoadCompTasks() = 0;
 
-    virtual std::vector<int> GetChildsBy(int parent_id) = 0;
+    virtual std::vector<int> GetChildsById(int parent_id) = 0;
 };
 
 #endif // DATABASEINTERFACE_H
