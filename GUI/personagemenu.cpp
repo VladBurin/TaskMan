@@ -13,12 +13,12 @@ PersonageMenu::PersonageMenu(Engine *engine, MainWindow* main_wind, QWidget *par
     // Get all existing personages
     std::vector<int> personages = Eng->GetPersIds();
 
-    std::vector<QPushButton*> pers;
+    std::vector<PersonageButton*> pers;
 
     for(auto it = personages.begin(); it != personages.end(); ++it)
     {
         //  нопка с вшитым "ID" внутри
-        QPushButton* butt = new QPushButton(QString::fromStdString(Eng->GetPersById(*it)->GetName()));
+        PersonageButton* butt = new PersonageButton(Eng->GetPersById(*it)->GetId(),nullptr);
         butt->setProperty("pers_id", Eng->GetPersById(*it)->GetId());
         pers.push_back(butt);
     }
@@ -38,11 +38,10 @@ PersonageMenu::PersonageMenu(Engine *engine, MainWindow* main_wind, QWidget *par
             col = 0;
             row++;
         }
+
+        connect(pers.at(it), &QPushButton::clicked, main_wind, &MainWindow::CreateTaskForm);
+
     }
-
-    //ui->pushButton->setProperty("id",0);
-
-    connect(ui->pushButton, &QPushButton::clicked, main_wind, &MainWindow::CreateTaskForm);
 
 }
 

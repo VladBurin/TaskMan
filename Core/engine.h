@@ -67,6 +67,8 @@ public:
 
     void DeleteFromIncomplete(int id);
 
+    void DeleteFromComplete(int id);
+
     bool CheckChildCompleted(int id);
 
     std::vector<int> GetPersIds();
@@ -89,6 +91,7 @@ public:
 
     void AddScoreToSkill(int id, int scores);
 
+private:
     void LoadFromDB();
 
     void LoadPersonages();

@@ -51,6 +51,22 @@
     </widget>
    </item>
   </layout>
+  <action name="actionCreate_new_skill">
+   <property name="text">
+    <string>Create new skill</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new skill</string>
+   </property>
+  </action>
+  <action name="actionCreate_new_task">
+   <property name="text">
+    <string>Create new task</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new task</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -8,14 +8,12 @@ MainWindow::MainWindow(Engine *engine, QWidget *parent) :
     TaskFormIns(nullptr),
     ui(new Ui::MainWindow)
 {
-    MainWindow* g = this;
-    //TaskForm *w = new TaskForm(MainEngine,0);
+    ui->setupUi(this);
 
     PersMenu = new PersonageMenu(Eng,this);
-
     setCentralWidget(PersMenu);
 
-    this->resize(300,500);
+    this->resize(500,400);
 }
 
 void MainWindow::CreateTaskForm(int id)

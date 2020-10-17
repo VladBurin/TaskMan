@@ -53,7 +53,6 @@ TaskForm::~TaskForm()
     delete ui;
 }
 
-
 void TaskForm::CreateChilds(int task_id, QTreeWidgetItem* par)
 {
     //верхний уровень задач

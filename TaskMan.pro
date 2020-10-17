@@ -36,8 +36,12 @@ SOURCES += \
         Core/engine.cpp \
         Database/dbhandler.cpp \
         GUI/mainwindow.cpp \
+        GUI/personagebutton.cpp \
         GUI/personagemenu.cpp \
+        GUI/personcreatedialog.cpp \
+        GUI/taskcreatedialog.cpp \
         GUI/taskform.cpp \
+        GUI/skillcreatedialog.cpp \
         main.cpp
 
 HEADERS += \
@@ -48,13 +52,20 @@ HEADERS += \
         Core/engine.h \
         Database/dbhandler.h \
         GUI/mainwindow.h \
+        GUI/personagebutton.h \
         GUI/personagemenu.h \
-        GUI/taskform.h
+        GUI/personcreatedialog.h \
+        GUI/taskcreatedialog.h \
+        GUI/taskform.h \
+        GUI/skillcreatedialog.h
 
 FORMS += \
         GUI/mainwindow.ui \
         GUI/personagemenu.ui \
-        GUI/taskform.ui
+        GUI/personcreatedialog.ui \
+        GUI/taskcreatedialog.ui \
+        GUI/taskform.ui \
+        GUI/skillcreatedialog.ui
 
 
 # Default rules for deployment.

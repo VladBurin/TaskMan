@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include "../Core/engine.h"
 
+#include "personagebutton.h"
+
 class MainWindow;
 
 
