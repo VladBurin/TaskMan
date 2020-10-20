@@ -9,13 +9,16 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
-class SkillCreateDIalog : public QDialog
+class SkillCreateDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SkillCreateDIalog(QWidget *parent = nullptr);
-    ~SkillCreateDIalog();
+    explicit SkillCreateDialog(QWidget *parent = nullptr);
+    ~SkillCreateDialog();
+
+    std::string GetPersName();
+    std::string GetPersDesc();
 
 private:
     QLabel* EnterNameLabel;

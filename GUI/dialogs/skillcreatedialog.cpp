@@ -1,6 +1,6 @@
 #include "skillcreatedialog.h"
 
-SkillCreateDIalog::SkillCreateDIalog(QWidget *parent) :
+SkillCreateDialog::SkillCreateDialog(QWidget *parent) :
     QDialog(parent)
 {
     setWindowTitle("Create new skill");
@@ -31,6 +31,18 @@ SkillCreateDIalog::SkillCreateDIalog(QWidget *parent) :
     setLayout(vbox_layout);
 }
 
-SkillCreateDIalog::~SkillCreateDIalog()
+SkillCreateDialog::~SkillCreateDialog()
 {
+}
+
+std::string SkillCreateDialog::GetPersName()
+{
+    QString text = SkillName->text();
+    return text.toUtf8().data();
+}
+
+std::string SkillCreateDialog::GetPersDesc()
+{
+    QString text = SkillDescript->toPlainText();
+    return text.toUtf8().data();
 }

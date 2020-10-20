@@ -13,7 +13,7 @@ MainWindow::MainWindow(Engine *engine, QWidget *parent) :
     PersMenu = new PersonageMenu(Eng,this);
     setCentralWidget(PersMenu);
     this->setWindowTitle("Characters");
-    this->resize(500,400);
+    this->resize(1000,600);
 }
 
 void MainWindow::CreateTaskForm(int id)

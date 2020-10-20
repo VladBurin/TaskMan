@@ -35,13 +35,17 @@ SOURCES += \
         Core/taskunit.cpp \
         Core/engine.cpp \
         Database/dbhandler.cpp \
+        \
         GUI/mainwindow.cpp \
         GUI/personagebutton.cpp \
         GUI/personagemenu.cpp \
-        GUI/personcreatedialog.cpp \
-        GUI/taskcreatedialog.cpp \
         GUI/taskform.cpp \
-        GUI/skillcreatedialog.cpp \
+        \
+        GUI/dialogs/delpersdialog.cpp \
+        GUI/dialogs/editpersdialog.cpp \
+        GUI/dialogs/personcreatedialog.cpp \
+        GUI/dialogs/taskcreatedialog.cpp \
+        GUI/dialogs/skillcreatedialog.cpp \
         main.cpp
 
 HEADERS += \
@@ -51,13 +55,17 @@ HEADERS += \
         Core/taskunit.h \
         Core/engine.h \
         Database/dbhandler.h \
+        \
         GUI/mainwindow.h \
         GUI/personagebutton.h \
         GUI/personagemenu.h \
-        GUI/personcreatedialog.h \
-        GUI/taskcreatedialog.h \
         GUI/taskform.h \
-        GUI/skillcreatedialog.h
+        \
+        GUI/dialogs/delpersdialog.h \
+        GUI/dialogs/editpersdialog.h \
+        GUI/dialogs/personcreatedialog.h \
+        GUI/dialogs/taskcreatedialog.h \
+        GUI/dialogs/skillcreatedialog.h \
 
 FORMS += \
         GUI/mainwindow.ui \

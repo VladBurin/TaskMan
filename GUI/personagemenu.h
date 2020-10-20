@@ -6,7 +6,10 @@
 #include "../Core/engine.h"
 
 #include "personagebutton.h"
-#include "personcreatedialog.h"
+#include "dialogs/personcreatedialog.h"
+//#include "dialogs/editpersdialog.h"
+#include "dialogs/delpersdialog.h"
+
 class MainWindow;
 
 
@@ -21,14 +24,18 @@ class PersonageMenu : public QWidget
 
 public:
     explicit PersonageMenu(Engine *engine, MainWindow* main_wind, QWidget *parent = nullptr);
-    ~PersonageMenu();
+    virtual ~PersonageMenu();
 
     void UpdatePersGrid();
 
 public slots:
     void CreatePers();
-    //void DeletePers();
-    //void EditPers();
+
+    void DeletePers(int id);
+    void EditPers(int id);
+
+    void ClearAboutPers();
+    void UpdateAboutPers(int id);
 
 
 
@@ -36,6 +43,9 @@ private:
     Engine* Eng;
     MainWindow* MainWind;
     Ui::PersonageMenu *ui;
+
+    std::vector<PersonageButton*> Pers;
+    QPushButton* createPers;
 };
 
 #endif // PERSONAGEMENU_H

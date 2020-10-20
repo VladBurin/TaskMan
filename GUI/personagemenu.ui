@@ -35,11 +35,11 @@
       <number>5</number>
      </property>
      <item>
-      <layout class="QVBoxLayout" name="vertLayoutPersChoose" stretch="0,0">
+      <layout class="QVBoxLayout" name="vertLayoutPersChoose" stretch="0,0,9">
        <item>
         <widget class="QLabel" name="LabelPerson">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -56,7 +56,27 @@
         </widget>
        </item>
        <item>
-        <layout class="QGridLayout" name="gridLayoutPers"/>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Preferred</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayoutPers">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMaximumSize</enum>
+         </property>
+        </layout>
        </item>
       </layout>
      </item>
