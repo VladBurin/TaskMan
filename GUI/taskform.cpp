@@ -4,8 +4,8 @@
 
 TaskForm::TaskForm(Engine *engine, int pers_id, MainWindow* main_wind, QWidget *parent) :
     Eng(engine),
-    PersId(pers_id),
     QWidget(parent),
+    PersId(pers_id),
     MainWind(main_wind),
     ui(new Ui::TaskForm)
 {
@@ -33,8 +33,12 @@ TaskForm::~TaskForm()
     delete ui;
 }
 
+// TODO доделать с завершенными таксками и т.д.
 void TaskForm::CreateChilds(int task_id, QTreeWidgetItem* par)
 {
+    if(!Eng->GetTaskById(task_id))
+        return;
+
     //верхний уровень задач
     QTreeWidgetItem* item = new QTreeWidgetItem(par);
     item->setExpanded(true);
@@ -44,8 +48,7 @@ void TaskForm::CreateChilds(int task_id, QTreeWidgetItem* par)
     //дети
     std::vector<int> childs = Eng->GetTaskById(task_id)->GetChildTasksId();
 
-    if(childs.empty())
-        item->setCheckState(2,Qt::Unchecked);
+    item->setCheckState(2,Qt::Unchecked);
 
     for(auto h = childs.begin(); h != childs.end(); ++h)
     {
@@ -62,12 +65,13 @@ void TaskForm::on_comboboxSkills_activated(int index)
 void TaskForm::UpdateTasks()
 {
     int skill_id = ui->comboboxSkills->currentData().toInt();
-
     if(skill_id == -11)
     {
         ui->treeTasks->clear();
 
         std::vector<int> tasks = Eng->GetHighIncompTasksByPersId(PersId);
+
+        //std::vector<int> com_tasks = Eng->GetHighIncompTasksByPersId(PersId);
 
         for(auto t = tasks.begin(); t != tasks.end(); ++t)
         {
@@ -81,8 +85,8 @@ void TaskForm::UpdateTasks()
             //дети и далее
             std::vector<int> childs = Eng->GetTaskById(*t)->GetChildTasksId();
 
-            if(childs.empty())
-                item->setCheckState(2,Qt::Unchecked);
+            item->setCheckState(2, Qt::Unchecked);
+
 
             for(auto h = childs.begin(); h != childs.end(); ++h)
             {
@@ -108,8 +112,7 @@ void TaskForm::UpdateTasks()
             //дети и далее
             std::vector<int> childs = Eng->GetTaskById(*t)->GetChildTasksId();
 
-            if(childs.empty())
-                item->setCheckState(2,Qt::Unchecked);
+            item->setCheckState(2, Qt::Unchecked);
 
             for(auto h = childs.begin(); h != childs.end(); ++h)
             {
@@ -199,12 +202,46 @@ void TaskForm::UpdateSkillDesc()
 
 void TaskForm::on_treeTasks_itemSelectionChanged()
 {
+    if(!ui->treeTasks->currentItem())
+        return;
+
     int task_id = ui->treeTasks->currentItem()->data(0,Qt::UserRole).toInt();
     TaskUnit* task = Eng->GetTaskById(task_id);
+
+    if(!task)
+        return;
 
     ui->textAboutTask->clear();
     QString text = QString::fromStdString(task->GetDescript());
     ui->textAboutTask->setText(text);
-
-
 }
+
+void TaskForm::on_treeTasks_itemClicked(QTreeWidgetItem *item, int column)
+{
+    if(!item || column!=2)
+    {
+        return;
+    }
+
+    ui->treeTasks->setCurrentItem(item);
+
+    if(!item->checkState(column))
+        return;
+
+    int id_task = ui->treeTasks->currentItem()->data(0, Qt::UserRole).toInt();
+
+    if(!Eng->CheckIfTaskComplete(id_task))
+    {
+        TaskComplete(id_task);
+    }
+}
+
+void TaskForm::TaskComplete(int id)
+{
+    Eng->TaskComplete(id);
+    UpdateTasks();
+    UpdateSkillDesc();
+    CreateAboutPers();
+}
+
+

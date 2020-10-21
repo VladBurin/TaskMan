@@ -12,6 +12,9 @@ private:
     /// Identifier
     int Id;
 
+    /// Status of task
+    bool Completed;
+
     /// Name (short description)
     std::string Name;
 
@@ -36,7 +39,8 @@ private:
     std::vector<int> ChildTasks;
 
 public:
-    TaskUnit(int id, int belong_id, int par_id, std::string name, std::string description, int scores, bool belong_skill_pers);
+    TaskUnit(int id, bool status, int belong_id, int par_id, std::string name,
+             std::string description, int scores, bool belong_skill_pers);
 
     /// Getters
     const int GetId() const;

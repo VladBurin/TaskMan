@@ -60,7 +60,7 @@ Engine::Engine()
 
 }
 
-// Creatin
+// Creating
 void Engine::CreatePers(std::string name, std::string description)
 {
     int id = 0;
@@ -131,8 +131,9 @@ void Engine::CreateTask(int belong_id, int parent, std::string name,
         if(!skill)
             return;
 
-        IncompletedTasks.insert(std::make_pair(id,
-                                              TaskUnit(id,belong_id,parent,name,description,scores,belong_skill_pers)));
+        Tasks.insert(std::make_pair(id,
+                                    TaskUnit(id, false, belong_id, parent,name,
+                                             description, scores, belong_skill_pers)));
         TaskUnit* task = GetTaskById(parent);
         if(task)
             task->AddChild(id);
@@ -272,6 +273,17 @@ void Engine::TaskComplete(int id)
     int par_id = complete->GetParentId();
     if(CheckChildCompleted(par_id))
         TaskComplete(par_id);
+}
+
+bool Engine::CheckIfTaskComplete(int id)
+{
+    auto it_1 = CompletedTasks.find(id);
+
+    // Если задача не в завершенных
+    if(it_1 == CompletedTasks.end())
+        return false;
+
+    return true;
 }
 
 std::vector<int> Engine::GetPersIds()

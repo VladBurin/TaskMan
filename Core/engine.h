@@ -24,10 +24,7 @@ private:
     std::map<int, Personage> Personages;
 
     /// Хранилище задач
-    std::map<int,TaskUnit> IncompletedTasks;
-
-    /// Хранилище задач
-    std::map<int,TaskUnit> CompletedTasks;
+    std::map<int,TaskUnit> Tasks;
 
     /// Хранилище скилов
     std::map<int,Skill> Skills;
@@ -93,6 +90,8 @@ public:
 
     std::vector<int> GetAllTasksBySkillId(int id);
 
+
+    bool CheckIfTaskComplete(int id);
 
     // Only root tasks (without parent)
     std::vector<int> GetHighIncompTasksByPersId(int id);

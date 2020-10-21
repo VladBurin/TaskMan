@@ -30,7 +30,13 @@ private slots:
     void on_comboboxSkills_activated(int index);
 
     void CreateSkill();
+
     void on_treeTasks_itemSelectionChanged();
+
+    void TaskComplete(int id);
+    // проверка на
+    void on_treeTasks_itemClicked(QTreeWidgetItem *item, int column);
+
 
 private:
 

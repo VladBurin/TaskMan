@@ -1,8 +1,8 @@
 #include "taskunit.h"
 
-TaskUnit::TaskUnit(int id, int belong_id, int par_id, std::string name,
+TaskUnit::TaskUnit(int id, bool status, int belong_id, int par_id, std::string name,
                    std::string description, int scores, bool belong_skill_pers)
-                   : Id(id), BelongId(belong_id), Parent(par_id),
+                   : Id(id), Completed(status), BelongId(belong_id), Parent(par_id),
                      Name(name), Description(description), ScoresForTask(scores),
                      BelongSkillOrPers(belong_skill_pers)
 {
