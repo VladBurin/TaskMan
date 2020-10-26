@@ -1,16 +1,15 @@
-#include "personcreatedialog.h"
+#include "charactercreatedialog.h"
 
-
-PersonCreateDialog::PersonCreateDialog(QWidget *parent) :
+CharCreateDialog::CharCreateDialog(QWidget *parent) :
     QDialog(parent)
 {
     setWindowTitle("Create new character");
 
     EnterNameLabel = new QLabel("Character name");
-    PersName = new QLineEdit;
+    CharName = new QLineEdit;
 
     EnterDescLabel = new QLabel("Character description");
-    PersDescript = new QTextEdit;
+    CharDescript = new QTextEdit;
 
     OkButton = new QPushButton("Ok");
     CancelButton = new QPushButton("Cancel");
@@ -25,25 +24,25 @@ PersonCreateDialog::PersonCreateDialog(QWidget *parent) :
 
     QVBoxLayout* vbox_layout = new QVBoxLayout;
     vbox_layout->addWidget(EnterNameLabel);
-    vbox_layout->addWidget(PersName);
+    vbox_layout->addWidget(CharName);
     vbox_layout->addWidget(EnterDescLabel);
-    vbox_layout->addWidget(PersDescript);
+    vbox_layout->addWidget(CharDescript);
     vbox_layout->addLayout(hbox_layout);
     setLayout(vbox_layout);
 }
 
-PersonCreateDialog::~PersonCreateDialog()
+CharCreateDialog::~CharCreateDialog()
 {
 }
 
-std::string PersonCreateDialog::GetPersName()
+std::string CharCreateDialog::GetPersName()
 {
-    QString text = PersName->text();
+    QString text = CharName->text();
     return text.toUtf8().data();
 }
 
-std::string PersonCreateDialog::GetPersDesc()
+std::string CharCreateDialog::GetPersDesc()
 {
-    QString text = PersDescript->toPlainText();
+    QString text = CharDescript->toPlainText();
     return text.toUtf8().data();
 }

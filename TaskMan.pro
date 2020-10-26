@@ -28,52 +28,65 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 #CONFIG += c++11
 
-SOURCES += \
-        Core/databaseinterface.cpp \
-        Core/personage.cpp \
-        Core/skill.cpp \
-        Core/taskunit.cpp \
-        Core/engine.cpp \
-        Database/dbhandler.cpp \
-        \
-        GUI/mainwindow.cpp \
-        GUI/personagebutton.cpp \
-        GUI/personagemenu.cpp \
-        GUI/taskform.cpp \
-        \
-        GUI/dialogs/delpersdialog.cpp \
-        GUI/dialogs/editpersdialog.cpp \
-        GUI/dialogs/personcreatedialog.cpp \
-        GUI/dialogs/taskcreatedialog.cpp \
-        GUI/dialogs/skillcreatedialog.cpp \
-        main.cpp
+#configuring modules to bild
+DEFINES += TASK_MAN_GUI
 
+#include CORE & DBHandler
 HEADERS += \
+        Core/character.h \
         Core/databaseinterface.h \
-        Core/personage.h \
         Core/skill.h \
-        Core/taskunit.h \
         Core/engine.h \
-        Database/dbhandler.h \
+        Core/task.h \
         \
-        GUI/mainwindow.h \
-        GUI/personagebutton.h \
-        GUI/personagemenu.h \
-        GUI/taskform.h \
+        Database/dbhandler.h
+
+SOURCES += \
+        main.cpp \
+        Core/character.cpp \
+        Core/databaseinterface.cpp \
+        Core/skill.cpp \
+        Core/engine.cpp \
+        Core/task.cpp \
         \
-        GUI/dialogs/delpersdialog.h \
-        GUI/dialogs/editpersdialog.h \
-        GUI/dialogs/personcreatedialog.h \
-        GUI/dialogs/taskcreatedialog.h \
-        GUI/dialogs/skillcreatedialog.h \
+        Database/dbhandler.cpp
 
-FORMS += \
-        GUI/mainwindow.ui \
-        GUI/personagemenu.ui \
-        GUI/taskform.ui
+#include GUI
+contains(DEFINES,TASK_MAN_GUI) {
+    HEADERS += \
+            GUI/mainwindow.h \
+            GUI/taskform.h \
+            GUI/characterbutton.h \
+            GUI/charactermenu.h \
+            \
+            GUI/dialogs/delchardialog.h \
+            GUI/dialogs/editchardialog.h \
+            GUI/dialogs/charactercreatedialog.h \
+            GUI/dialogs/taskcreatedialog.h \
+            GUI/dialogs/skillcreatedialog.h
 
+
+    SOURCES += \
+            GUI/characterbutton.cpp \
+            GUI/charactermenu.cpp \
+            GUI/mainwindow.cpp \
+            GUI/taskform.cpp \
+            \
+            GUI/dialogs/delchardialog.cpp \
+            GUI/dialogs/editchardialog.cpp \
+            GUI/dialogs/charactercreatedialog.cpp \
+            GUI/dialogs/taskcreatedialog.cpp \
+            GUI/dialogs/skillcreatedialog.cpp
+
+    FORMS += \
+            GUI/charactermenu.ui \
+            GUI/mainwindow.ui \
+            GUI/taskform.ui \
+            GUI/dialogs/taskcreatedialog.ui
+}
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+

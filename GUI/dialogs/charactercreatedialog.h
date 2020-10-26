@@ -10,23 +10,23 @@
 #include <QVBoxLayout>
 
 
-class PersonCreateDialog : public QDialog
+class CharCreateDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PersonCreateDialog(QWidget *parent = nullptr);
-    ~PersonCreateDialog();
+    explicit CharCreateDialog(QWidget *parent = nullptr);
+    ~CharCreateDialog();
 
     std::string GetPersName();
     std::string GetPersDesc();
 
 private:
     QLabel* EnterNameLabel;
-    QLineEdit* PersName;
+    QLineEdit* CharName;
 
     QLabel* EnterDescLabel;
-    QTextEdit* PersDescript;
+    QTextEdit* CharDescript;
 
     QPushButton* OkButton;
     QPushButton* CancelButton;

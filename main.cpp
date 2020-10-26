@@ -4,9 +4,11 @@
 #include "Core/engine.h"
 #include <QtSql>
 
-#include "../GUI/personagemenu.h"
-#include "../GUI/taskform.h"
-#include "../GUI/mainwindow.h"
+#ifdef TASK_MAN_GUI
+    #include "../GUI/charactermenu.h"
+    #include "../GUI/taskform.h"
+    #include "../GUI/mainwindow.h"
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -125,7 +127,7 @@ int main(int argc, char *argv[])
     {
         std::cout << str.toUtf8().data() << std::endl;
     }
-    //Personage* curr_pers = MainEngine->GetPersById(0);
+    //Character* curr_pers = MainEngine->GetPersById(0);
     */
 
     return a.exec();

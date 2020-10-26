@@ -5,6 +5,7 @@
 #include "../Core/engine.h"
 #include <QTreeWidget>
 #include "dialogs/skillcreatedialog.h"
+#include "dialogs/taskcreatedialog.h"
 
 class MainWindow;
 
@@ -17,7 +18,7 @@ class TaskForm : public QWidget
     Q_OBJECT
 
 public:
-    explicit TaskForm(Engine *engine, int pers_id, MainWindow* main_wind, QWidget *parent = nullptr);
+    explicit TaskForm(Engine *engine, int char_id, MainWindow* main_wind, QWidget *parent = nullptr);
 
     void UpdateTasks();
 
@@ -38,15 +39,21 @@ private slots:
     void on_treeTasks_itemClicked(QTreeWidgetItem *item, int column);
 
 
+    void on_actionCreate_new_task_triggered();
+
+    void on_actionEdit_Task_triggered();
+
+    void on_actionDelete_Task_triggered();
+
 private:
 
     Engine* Eng;
-    int PersId;
+    int CharId;
     MainWindow* MainWind;
 
     Ui::TaskForm *ui;
 
-    void CreateAboutPers();
+    void CreateAboutChar();
 
     void UpdateSkillDesc();
 

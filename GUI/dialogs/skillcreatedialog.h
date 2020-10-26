@@ -17,8 +17,8 @@ public:
     explicit SkillCreateDialog(QWidget *parent = nullptr);
     ~SkillCreateDialog();
 
-    std::string GetPersName();
-    std::string GetPersDesc();
+    std::string GetSkillName();
+    std::string GetSkillDesc();
 
 private:
     QLabel* EnterNameLabel;

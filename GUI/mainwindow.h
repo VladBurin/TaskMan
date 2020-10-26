@@ -4,7 +4,7 @@
 #include <QMainWindow>
 #include "../Core/engine.h"
 
-#include "personagemenu.h"
+#include "charactermenu.h"
 #include "taskform.h"
 
 namespace Ui {
@@ -21,7 +21,7 @@ public:
 
 public slots:
         void CreateTaskForm(int id);
-        void CreatePersForm();
+        void CreateCharForm();
 
 private:
     Ui::MainWindow *ui;
@@ -29,7 +29,7 @@ private:
     //Engine
     Engine* Eng;
     // возможные варианты центрального виджета
-    PersonageMenu* PersMenu;
+    CharacterMenu* CharMenu;
     TaskForm* TaskFormIns;
 
 };

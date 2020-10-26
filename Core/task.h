@@ -12,9 +12,6 @@ private:
     /// Identifier
     int Id;
 
-    /// Status of task
-    bool Completed;
-
     /// Name (short description)
     std::string Name;
 
@@ -24,23 +21,24 @@ private:
     /// Scores for this task
     int ScoresForTask;
 
-    /// Whether the task belongs to Skill or the Personage
-    /// true  - to Skill
-    /// false - to Personage
-    bool BelongSkillOrPers;
-
-    /// Identifier of thing this task belong to (Skill or Personage)
+    /// Identifier of skill this task belong to
     int BelongId;
 
     /// Parent task
     int Parent;
 
+    /// Status of task
+    bool Completed;
+
     /// Tasks - children of this task
     std::vector<int> ChildTasks;
 
 public:
-    TaskUnit(int id, bool status, int belong_id, int par_id, std::string name,
-             std::string description, int scores, bool belong_skill_pers);
+    TaskUnit(int id, std::string name, std::string description,
+             int scores,  int belong_id, int par_id, bool completed = false);
+
+    /// Setters
+    void SetCompleteStatus(bool complete);
 
     /// Getters
     const int GetId() const;
@@ -49,13 +47,13 @@ public:
 
     const std::string& GetDescript() const;
 
-    const bool GetBelongSkillPers() const;
+    const int GetScoresForTask() const;
 
     const int GetBelongId() const;
 
     const int GetParentId() const;
 
-    const int GetScoresForTask() const;
+    const bool GetCompletStatus() const;
 
     const std::vector<int>& GetChildTasksId() const;
 

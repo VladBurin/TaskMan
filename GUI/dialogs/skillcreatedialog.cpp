@@ -35,13 +35,13 @@ SkillCreateDialog::~SkillCreateDialog()
 {
 }
 
-std::string SkillCreateDialog::GetPersName()
+std::string SkillCreateDialog::GetSkillName()
 {
     QString text = SkillName->text();
     return text.toUtf8().data();
 }
 
-std::string SkillCreateDialog::GetPersDesc()
+std::string SkillCreateDialog::GetSkillDesc()
 {
     QString text = SkillDescript->toPlainText();
     return text.toUtf8().data();

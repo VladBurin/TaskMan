@@ -4,33 +4,33 @@
 MainWindow::MainWindow(Engine *engine, QWidget *parent) :
     Eng(engine),
     QMainWindow(parent),
-    PersMenu(nullptr),
+    CharMenu(nullptr),
     TaskFormIns(nullptr),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
-    PersMenu = new PersonageMenu(Eng,this);
-    setCentralWidget(PersMenu);
+    CharMenu = new CharacterMenu(Eng,this);
+    setCentralWidget(CharMenu);
     this->setWindowTitle("Characters");
     this->resize(1000,600);
 }
 
 void MainWindow::CreateTaskForm(int id)
 {
-    delete PersMenu;
+    delete CharMenu;
     TaskFormIns = new TaskForm(Eng,id,this);
 
     setCentralWidget(TaskFormIns);
     this->setWindowTitle("Tasks");
 }
 
-void MainWindow::CreatePersForm()
+void MainWindow::CreateCharForm()
 {
     delete TaskFormIns;
-    PersMenu = new PersonageMenu(Eng,this);
+    CharMenu = new CharacterMenu(Eng,this);
 
-    setCentralWidget(PersMenu);
+    setCentralWidget(CharMenu);
     this->setWindowTitle("Characters");
 }
 

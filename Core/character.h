@@ -1,16 +1,15 @@
-#ifndef SKILL_H
-#define SKILL_H
+#ifndef PERSONAGE_H
+#define PERSONAGE_H
 
+#include "skill.h"
+#include "task.h"
 #include <string>
-#include <vector>
 
 extern std::vector<int> ScoresForLevel;
 
-class Skill
+class Character
 {
-
 private:
-
     /// Identifier
     int Id;
 
@@ -32,19 +31,19 @@ private:
     /// Current scores
     int CurrentLevelScore;
 
-    /// Identifier of character to whom the skill belongs
-    int CharId;
+    /// Skill for common tasks
+    int TaskSkillId;
 
 public:
-    /// Skill can be loaded (with exact values of level, scores_sum) or created new one with 0 level and scores_sum
-    Skill(int id, int char_id, std::string name, std::string description, int level = 0 , int scores_sum = 0);
+    /// Character can be loaded (with exact values of level, scores_sum) or created new one with 0 level and scores_sum
+    Character(int id, std::string name, std::string description, int task_skill_id, int level = 0, int scores_sum = 0);
 
     /// Adding scores
     /// ScoresSum increase accurately
     /// Level may rise
     void AddScores(int scores);
 
-    /// Getters
+    ///Getters
     const int GetId() const;
 
     const std::string& GetName() const;
@@ -59,7 +58,9 @@ public:
 
     const int GetCurrentLevelScore() const;
 
-    const int GetCharId() const;
+    const int GetTaskSkillId() const;
+
+    void SetTaskSkillId(int id);
 };
 
-#endif // SKILL_H
+#endif // PERSONAGE_H

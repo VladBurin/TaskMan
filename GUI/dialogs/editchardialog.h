@@ -2,10 +2,10 @@
 #define EDITPERSDIALOG_H
 
 
-class EditPersDialog
+class EditCharDialog
 {
 public:
-    EditPersDialog();
+    EditCharDialog();
 };
 
 #endif // EDITPERSDIALOG_H

@@ -1,6 +1,6 @@
-#include "delpersdialog.h"
+#include "delchardialog.h"
 
-DelPersDialog::DelPersDialog(std::string name,  QWidget *parent)
+DelCharDialog::DelCharDialog(std::string name,  QWidget *parent)
     :QDialog(parent)
 {
     setWindowTitle("Deleting character");
@@ -24,6 +24,6 @@ DelPersDialog::DelPersDialog(std::string name,  QWidget *parent)
     setLayout(vbox_layout);
 }
 
-DelPersDialog::~DelPersDialog()
+DelCharDialog::~DelCharDialog()
 {
 }

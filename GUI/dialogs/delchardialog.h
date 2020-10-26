@@ -10,13 +10,13 @@
 #include <QVBoxLayout>
 
 
-class DelPersDialog : public QDialog
+class DelCharDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DelPersDialog(std::string pers_name, QWidget *parent = nullptr);
-    ~DelPersDialog();
+    explicit DelCharDialog(std::string pers_name, QWidget *parent = nullptr);
+    ~DelCharDialog();
 
 private:
 

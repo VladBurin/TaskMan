@@ -2,20 +2,21 @@
 #include "ui_taskform.h"
 #include "mainwindow.h"
 
-TaskForm::TaskForm(Engine *engine, int pers_id, MainWindow* main_wind, QWidget *parent) :
+//TODO bug with 2 Tasks
+
+TaskForm::TaskForm(Engine *engine, int char_id, MainWindow* main_wind, QWidget *parent) :
     Eng(engine),
     QWidget(parent),
-    PersId(pers_id),
+    CharId(char_id),
     MainWind(main_wind),
     ui(new Ui::TaskForm)
 {
     ui->setupUi(this);
 
     UpdateSkillsBox();
-
-    CreateAboutPers();
-
     ui->comboboxSkills->setCurrentIndex(0);
+
+    CreateAboutChar();
 
     ui->treeTasks->header()->resizeSection( 0, 500 );
     ui->treeTasks->header()->resizeSection( 1, 10 );
@@ -23,37 +24,19 @@ TaskForm::TaskForm(Engine *engine, int pers_id, MainWindow* main_wind, QWidget *
 
     UpdateTasks();
 
-    connect(ui->buttonBackToPers, &QPushButton::clicked, main_wind, &MainWindow::CreatePersForm);
+    connect(ui->buttonBackToPers, &QPushButton::clicked, main_wind, &MainWindow::CreateCharForm);
 
     connect(ui->buttonCreateSkill, &QPushButton::clicked, this, &TaskForm::CreateSkill);
+
+    ui->treeTasks->addAction(ui->actionCreate_new_task);
+    ui->treeTasks->addAction(ui->actionEdit_Task);
+    ui->treeTasks->addAction(ui->actionDelete_Task);
+    ui->treeTasks->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 TaskForm::~TaskForm()
 {
     delete ui;
-}
-
-// TODO доделать с завершенными таксками и т.д.
-void TaskForm::CreateChilds(int task_id, QTreeWidgetItem* par)
-{
-    if(!Eng->GetTaskById(task_id))
-        return;
-
-    //верхний уровень задач
-    QTreeWidgetItem* item = new QTreeWidgetItem(par);
-    item->setExpanded(true);
-    item->setData(0, Qt::UserRole, task_id);
-    item->setText(0, Eng->GetTaskById(task_id)->GetName().c_str());
-    item->setText(1, QString::number(Eng->GetTaskById(task_id)->GetScoresForTask()));
-    //дети
-    std::vector<int> childs = Eng->GetTaskById(task_id)->GetChildTasksId();
-
-    item->setCheckState(2,Qt::Unchecked);
-
-    for(auto h = childs.begin(); h != childs.end(); ++h)
-    {
-        CreateChilds(*h,item);
-    }
 }
 
 void TaskForm::on_comboboxSkills_activated(int index)
@@ -62,76 +45,86 @@ void TaskForm::on_comboboxSkills_activated(int index)
     UpdateSkillDesc();
 }
 
+// TODO доделать с завершенными таксками и т.д.
+void TaskForm::CreateChilds(int task_id, QTreeWidgetItem* par)
+{
+    TaskUnit* task = Eng->GetTaskById(task_id);
+
+    if(!task)
+        return;
+
+    //верхний уровень задач
+    QTreeWidgetItem* item = new QTreeWidgetItem(par);
+    item->setExpanded(true);
+    item->setData(0, Qt::UserRole, task_id);
+    item->setText(0, task->GetName().c_str());
+    item->setText(1, QString::number(task->GetScoresForTask()));
+
+    //дети
+    std::vector<int> childs = task->GetChildTasksId();
+
+    // task completion status
+    if(task->GetCompletStatus())
+        item->setCheckState(2, Qt::Checked);
+    else
+        item->setCheckState(2, Qt::Unchecked);
+
+    for(auto h = childs.begin(); h != childs.end(); ++h)
+    {
+        CreateChilds(*h,item);
+    }
+}
+
 void TaskForm::UpdateTasks()
 {
     int skill_id = ui->comboboxSkills->currentData().toInt();
-    if(skill_id == -11)
+
+    ui->treeTasks->clear();
+
+    std::vector<int> tasks = Eng->GetHighTasksBySkillId(skill_id);
+
+    for(auto t = tasks.begin(); t != tasks.end(); ++t)
     {
-        ui->treeTasks->clear();
+        TaskUnit* task = Eng->GetTaskById(*t);
 
-        std::vector<int> tasks = Eng->GetHighIncompTasksByPersId(PersId);
+        //верхний уровень задач
+        QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeTasks);
+        item->setExpanded(true);
+        item->setData(0,Qt::UserRole,(*t));
+        item->setText(0, task->GetName().c_str());
+        item->setText(1, QString::number(task->GetScoresForTask()));
 
-        //std::vector<int> com_tasks = Eng->GetHighIncompTasksByPersId(PersId);
+        //дети и далее
+        std::vector<int> childs = task->GetChildTasksId();
 
-        for(auto t = tasks.begin(); t != tasks.end(); ++t)
-        {
-            //верхний уровень задач
-            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeTasks);
-            item->setExpanded(true);
-            item->setData(0,Qt::UserRole,(*t));
-            item->setText(0, Eng->GetTaskById(*t)->GetName().c_str());
-            item->setText(1, QString::number(Eng->GetTaskById(*t)->GetScoresForTask()));
-
-            //дети и далее
-            std::vector<int> childs = Eng->GetTaskById(*t)->GetChildTasksId();
-
+        // task completion status
+        if(task->GetCompletStatus())
+            item->setCheckState(2, Qt::Checked);
+        else
             item->setCheckState(2, Qt::Unchecked);
 
-
-            for(auto h = childs.begin(); h != childs.end(); ++h)
-            {
-                CreateChilds(*h,item);
-            }
-        }
-    }
-    else
-    {
-        ui->treeTasks->clear();
-
-        std::vector<int> tasks = Eng->GetHighIncompTasksBySkillId(skill_id);
-
-        for(auto t = tasks.begin(); t != tasks.end(); ++t)
+        for(auto h = childs.begin(); h != childs.end(); ++h)
         {
-            //верхний уровень задач
-            QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeTasks);
-            item->setExpanded(true);
-            item->setData(0,Qt::UserRole,(*t));
-            item->setText(0, Eng->GetTaskById(*t)->GetName().c_str());
-            item->setText(1, QString::number(Eng->GetTaskById(*t)->GetScoresForTask()));
-
-            //дети и далее
-            std::vector<int> childs = Eng->GetTaskById(*t)->GetChildTasksId();
-
-            item->setCheckState(2, Qt::Unchecked);
-
-            for(auto h = childs.begin(); h != childs.end(); ++h)
-            {
-                CreateChilds(*h,item);
-            }
+            CreateChilds(*h,item);
         }
     }
-
 }
 
 void TaskForm::UpdateSkillsBox()
 {
     // Get pers skills
-    std::vector<int> skills = Eng->GetSkillsByPersId(PersId);
+    std::vector<int> skills = Eng->GetSkillsByPersId(CharId);
     ui->comboboxSkills->clear();
-    ui->comboboxSkills->addItem("Tasks",-11);
+
+    int task_skill = Eng->GetCharById(CharId)->GetTaskSkillId();
+
+    ui->comboboxSkills->addItem(QString::fromStdString(Eng->GetSkillById(task_skill)->GetName()),
+                                task_skill);
 
     for(auto it = skills.begin(); it != skills.end(); ++it)
     {
+        if((*it) == task_skill)
+            continue;
         ui->comboboxSkills->addItem(QString::fromStdString(Eng->GetSkillById(*it)->GetName()),
                              Eng->GetSkillById(*it)->GetId());
     }
@@ -140,35 +133,41 @@ void TaskForm::UpdateSkillsBox()
 
 void TaskForm::CreateSkill()
 {
+    QString skill_name;
+
     SkillCreateDialog * dialog = new SkillCreateDialog;
     if(dialog->exec() == QDialog::Accepted)
     {
-        Eng->CreateSkill(PersId, dialog->GetPersName(), dialog->GetPersDesc());
-        ui->comboboxSkills->setCurrentIndex(ui->comboboxSkills->count()-1);
+        Eng->CreateSkill(CharId, dialog->GetSkillName(), dialog->GetSkillDesc());
+        skill_name = dialog->GetSkillName().c_str();
     }
     delete dialog;
 
     UpdateSkillsBox();
 
+    if(!skill_name.isEmpty())
+        ui->comboboxSkills->setCurrentText(skill_name);
+
     UpdateTasks();
 }
 
-void TaskForm::CreateAboutPers()
+void TaskForm::CreateAboutChar()
 {
     ui->textPersDesc->clear();
 
-    Personage* pers = Eng->GetPersById(PersId);
+    Character* pers = Eng->GetCharById(CharId);
 
     std::string name = pers->GetName();
     std::string descript = pers->GetDescript();
     int level = pers->GetLevel();
-    int score_sum = pers->GetScoresSum();
+    int current_score = pers->GetCurrentLevelScore();
+    int score_for_next_lev = pers->GetScoresToNextLevel();
 
     QString text;
-    text += "Name: \t\t" +QString::fromStdString(name) + "\n";
-    text += "Description: \t" +QString::fromStdString(descript) + "\n";
-    text += "Level: \t\t" +QString::number(level) + "\n";
-    text += "Sum of score: \t" +QString::number(score_sum) + "\n";
+    text += "Name: \t\t" + QString::fromStdString(name) + "\n";
+    text += "Description: \t" + QString::fromStdString(descript) + "\n";
+    text += "Level: \t\t" + QString::number(level) + "\n";
+    text += "Score: \t" + QString::number(current_score) + " / " + QString::number(score_for_next_lev) + "\n";
 
     ui->textPersDesc->setText(text);
 
@@ -180,7 +179,7 @@ void TaskForm::UpdateSkillDesc()
 
     ui->textSkillDesc->clear();
 
-    if(skill_id == -11)
+    if(skill_id == Eng->GetCharById(CharId)->GetTaskSkillId())
         return;
 
     Skill* skill = Eng->GetSkillById(skill_id);
@@ -188,13 +187,14 @@ void TaskForm::UpdateSkillDesc()
     std::string name = skill->GetName();
     std::string descript = skill->GetDescript();
     int level = skill->GetLevel();
-    int score_sum = skill->GetScoresSum();
+    int current_score = skill->GetCurrentLevelScore();
+    int score_for_next_lev = skill->GetScoresToNextLevel();
 
     QString text;
     text += "Name: \t\t" +QString::fromStdString(name) + "\n";
     text += "Description: \t" +QString::fromStdString(descript) + "\n";
     text += "Level: \t\t" +QString::number(level) + "\n";
-    text += "Sum of score: \t" +QString::number(score_sum) + "\n";
+    text += "Score: \t" + QString::number(current_score) + " / " + QString::number(score_for_next_lev) + "\n";
 
     ui->textSkillDesc->setText(text);
 
@@ -218,7 +218,7 @@ void TaskForm::on_treeTasks_itemSelectionChanged()
 
 void TaskForm::on_treeTasks_itemClicked(QTreeWidgetItem *item, int column)
 {
-    if(!item || column!=2)
+    if(!item || column != 2)
     {
         return;
     }
@@ -226,12 +226,22 @@ void TaskForm::on_treeTasks_itemClicked(QTreeWidgetItem *item, int column)
     ui->treeTasks->setCurrentItem(item);
 
     if(!item->checkState(column))
+    {
+        item->setCheckState(2, Qt::Checked);
         return;
+    }
 
     int id_task = ui->treeTasks->currentItem()->data(0, Qt::UserRole).toInt();
 
-    if(!Eng->CheckIfTaskComplete(id_task))
+    // If task wasn't completed
+    if(!(Eng->GetTaskById(id_task)->GetCompletStatus()))
     {
+        // If it is attempt of completion task with incompleted childs
+        if(!Eng->CheckChildCompleted(id_task))
+        {
+            item->setCheckState(2, Qt::Unchecked);
+            return;
+        }
         TaskComplete(id_task);
     }
 }
@@ -241,7 +251,40 @@ void TaskForm::TaskComplete(int id)
     Eng->TaskComplete(id);
     UpdateTasks();
     UpdateSkillDesc();
-    CreateAboutPers();
+    CreateAboutChar();
 }
 
+void TaskForm::on_actionCreate_new_task_triggered()
+{
+    int skill_id = ui->comboboxSkills->currentData().toInt();
+    int task_id = -11;
+    QTreeWidgetItem* task = ui->treeTasks->currentItem();
+    if(task)
+        task_id = task->data(0,Qt::UserRole).toInt();
 
+    int final_skill_id = skill_id;
+
+    TaskCreateDialog* dialog = new TaskCreateDialog(Eng,CharId,skill_id,task_id);
+    if(dialog->exec() == QDialog::Accepted)
+    {
+        Eng->CreateTask(dialog->GetTaskName(),dialog->GetTaskDesc(),
+                        dialog->GetTaskScore(),dialog->GetSkillId(),dialog->GetParentTaskId());
+        final_skill_id = dialog->GetSkillId();
+    }
+    delete dialog;
+
+    //Update skill if changed
+    ui->comboboxSkills->setCurrentText(QString::fromStdString(Eng->GetSkillById(final_skill_id)->GetName()));
+    on_comboboxSkills_activated(0);
+
+}
+
+void TaskForm::on_actionEdit_Task_triggered()
+{
+
+}
+
+void TaskForm::on_actionDelete_Task_triggered()
+{
+
+}

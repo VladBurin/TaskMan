@@ -173,6 +173,22 @@
     <string>Create new task</string>
    </property>
   </action>
+  <action name="actionEdit_Task">
+   <property name="text">
+    <string>Edit_Task</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit_Task</string>
+   </property>
+  </action>
+  <action name="actionDelete_Task">
+   <property name="text">
+    <string>Delete_Task</string>
+   </property>
+   <property name="toolTip">
+    <string>Delete_Task</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

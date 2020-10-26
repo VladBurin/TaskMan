@@ -1,10 +1,9 @@
-#include "taskunit.h"
+#include "task.h"
 
-TaskUnit::TaskUnit(int id, bool status, int belong_id, int par_id, std::string name,
-                   std::string description, int scores, bool belong_skill_pers)
-                   : Id(id), Completed(status), BelongId(belong_id), Parent(par_id),
-                     Name(name), Description(description), ScoresForTask(scores),
-                     BelongSkillOrPers(belong_skill_pers)
+TaskUnit::TaskUnit(int id, std::string name, std::string description,
+                   int scores,  int belong_id, int par_id, bool completed)
+                   : Id(id), Name(name), Description(description), ScoresForTask(scores),
+                     BelongId(belong_id), Parent(par_id), Completed(completed)
 {
 
 }
@@ -12,6 +11,12 @@ TaskUnit::TaskUnit(int id, bool status, int belong_id, int par_id, std::string n
 void TaskUnit::AddChild(int id)
 {
     ChildTasks.push_back(id);
+}
+
+// Setters
+void TaskUnit::SetCompleteStatus(bool complete)
+{
+    Completed = complete;
 }
 
 // Getters
@@ -40,11 +45,6 @@ const int TaskUnit::GetParentId() const
     return Parent;
 }
 
-const bool TaskUnit::GetBelongSkillPers() const
-{
-    return BelongSkillOrPers;
-}
-
 const int TaskUnit::GetScoresForTask() const
 {
     return ScoresForTask;
@@ -55,3 +55,7 @@ const int TaskUnit::GetBelongId() const
     return BelongId;
 }
 
+const bool TaskUnit::GetCompletStatus() const
+{
+    return Completed;
+}
