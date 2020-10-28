@@ -6,7 +6,7 @@
 #include <QTreeWidget>
 #include "dialogs/skillcreatedialog.h"
 #include "dialogs/taskcreatedialog.h"
-
+#include <QMessageBox>
 class MainWindow;
 
 namespace Ui {
@@ -35,7 +35,9 @@ private slots:
     void on_treeTasks_itemSelectionChanged();
 
     void TaskComplete(int id);
-    // проверка на
+
+    void TaskIncomplete(int id);
+
     void on_treeTasks_itemClicked(QTreeWidgetItem *item, int column);
 
 

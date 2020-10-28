@@ -3,7 +3,7 @@
 
 #include <QPushButton>
 #include <QAction>
-//TODO create actions for delete and edit character
+//TODO create actions for edit character
 
 class CharacterButton : public QPushButton
 {

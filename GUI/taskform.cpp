@@ -2,8 +2,6 @@
 #include "ui_taskform.h"
 #include "mainwindow.h"
 
-//TODO bug with 2 Tasks
-
 TaskForm::TaskForm(Engine *engine, int char_id, MainWindow* main_wind, QWidget *parent) :
     Eng(engine),
     QWidget(parent),
@@ -45,7 +43,6 @@ void TaskForm::on_comboboxSkills_activated(int index)
     UpdateSkillDesc();
 }
 
-// TODO доделать с завершенными таксками и т.д.
 void TaskForm::CreateChilds(int task_id, QTreeWidgetItem* par)
 {
     TaskUnit* task = Eng->GetTaskById(task_id);
@@ -225,12 +222,6 @@ void TaskForm::on_treeTasks_itemClicked(QTreeWidgetItem *item, int column)
 
     ui->treeTasks->setCurrentItem(item);
 
-    if(!item->checkState(column))
-    {
-        item->setCheckState(2, Qt::Checked);
-        return;
-    }
-
     int id_task = ui->treeTasks->currentItem()->data(0, Qt::UserRole).toInt();
 
     // If task wasn't completed
@@ -244,11 +235,24 @@ void TaskForm::on_treeTasks_itemClicked(QTreeWidgetItem *item, int column)
         }
         TaskComplete(id_task);
     }
+    // If task was completed
+    else
+    {
+        TaskIncomplete(id_task);
+    }
 }
 
 void TaskForm::TaskComplete(int id)
 {
     Eng->TaskComplete(id);
+    UpdateTasks();
+    UpdateSkillDesc();
+    CreateAboutChar();
+}
+
+void TaskForm::TaskIncomplete(int id)
+{
+    Eng->TaskIncomplete(id,true);
     UpdateTasks();
     UpdateSkillDesc();
     CreateAboutChar();
@@ -286,5 +290,23 @@ void TaskForm::on_actionEdit_Task_triggered()
 
 void TaskForm::on_actionDelete_Task_triggered()
 {
+    QTreeWidgetItem* task = ui->treeTasks->currentItem();
+    if(!task)
+        return;
 
+    int task_id = task->data(0,Qt::UserRole).toInt();
+
+    QMessageBox::StandardButton reply =
+            QMessageBox::question(this, "Warning",
+                                  "Are you sure you want to delete task \""
+                                  +QString::fromStdString(Eng->GetTaskById(task_id)->GetName())
+                                  +"\" and all subtasks of this one?",
+                                  QMessageBox::Yes|QMessageBox::Cancel);
+    if(reply == QMessageBox::Cancel)
+        return;
+
+    // Deleting task
+    Eng->DeleteTask(task_id);
+
+    on_comboboxSkills_activated(0);
 }

@@ -177,8 +177,8 @@ void Engine::DeleteSkill(int id)
     Skills.erase(id);
     DB->DeleteSkill(id);
     free_skills_ids.push_back(id);
-
-    std::vector<int> tasks_of_skill = GetTasksBySkillId(id);
+    // get only highest tasks
+    std::vector<int> tasks_of_skill = GetHighTasksBySkillId(id);
 
     for(auto it = tasks_of_skill.begin(); it != tasks_of_skill.end(); ++it)
     {
@@ -189,6 +189,8 @@ void Engine::DeleteSkill(int id)
 
 void Engine::DeleteTask(int id)
 {
+    //Getting childs before Task deleted
+    std::vector<int> childs = GetTaskById(id)->GetChildTasksId();
     Tasks.erase(id);
 
     DB->DeleteTask(id);
@@ -196,10 +198,8 @@ void Engine::DeleteTask(int id)
     free_tasks_ids.push_back(id);
 
     // Deleting childs
-    std::vector<int> childs = GetTaskById(id)->GetChildTasksId();
     for(auto it = childs.begin(); it != childs.end(); ++it)
         DeleteTask(*it);
-
 }
 
 
@@ -222,6 +222,7 @@ bool Engine::CheckChildCompleted(int id)
     return true;
 }
 
+// Completing the task
 void Engine::TaskComplete(int id)
 {
     TaskUnit* task = GetTaskById(id);
@@ -256,6 +257,47 @@ void Engine::TaskComplete(int id)
         TaskComplete(par_id);
 }
 
+// Incompleting completed task
+void Engine::TaskIncomplete(int id, bool first)
+{
+    TaskUnit* task = GetTaskById(id);
+    if(!task)
+        return;
+
+    // if task isn't last in tree task
+    if(first && !task->GetChildTasksId().empty())
+        return;
+
+    task->SetCompleteStatus(false);
+    DB->TaskUpdate(task);
+
+    // Delete score from skill or chararacter
+    int scores = -(task->GetScoresForTask());
+
+    int skill_id = task->GetBelongId();
+    int char_id = GetSkillById(skill_id)->GetCharId();
+
+    bool belong = !(GetCharById(char_id)->GetTaskSkillId() == skill_id);
+
+    if(belong)
+    {
+        AddScoreToSkill(skill_id,scores);
+    }
+    else
+    {
+        AddScoreToChar(char_id,scores);
+    }
+
+    int par_id = task->GetParentId();
+    TaskUnit* par_task = GetTaskById(par_id);
+
+    // If parent don't exist
+    if(!par_task)
+        return;
+
+    if((par_task->GetCompletStatus()))
+        TaskIncomplete(par_id, false);
+}
 
 std::vector<int> Engine::GetPersIds()
 {

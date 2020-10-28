@@ -21,7 +21,6 @@ CharacterButton::CharacterButton(int id, std::string name, QWidget *parent)
 
 }
 
-// TODO Edit Charon implement
 CharacterButton::~CharacterButton()
 {
 

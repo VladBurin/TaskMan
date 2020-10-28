@@ -42,7 +42,8 @@ void CharacterMenu::UpdateAboutChars(int id)
     ui->textDescription->clear();
 
     Character* pers = Eng->GetCharById(id);
-
+    if(!pers)
+        return;
     std::string name = pers->GetName();
     std::string descript = pers->GetDescript();
     int level = pers->GetLevel();
@@ -61,7 +62,7 @@ void CharacterMenu::UpdateAboutChars(int id)
 
 void CharacterMenu::UpdateCharsGrid()
 {
-    // TODO очистка и удаление всех виджетов (попытка удаления КНОПКА пока ее слот ещё выполняется)
+    // TODO очистка и удаление всех виджетов (попытка удаления КНОПКИ пока ее слот ещё выполняется)
 //    if(createPers)
 //        delete createPers;
 

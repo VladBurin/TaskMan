@@ -71,6 +71,8 @@ public:
 
     bool CheckChildCompleted(int id);
 
+    /// Incompleting completed task
+    void TaskIncomplete(int id, bool first);
 
     std::vector<int> GetPersIds();
 
