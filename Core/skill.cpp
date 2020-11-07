@@ -10,6 +10,7 @@ Skill::Skill(int id, int char_id, std::string name, std::string description, int
 
 void Skill::AddScores(int scores)
 {
+    /*
     ScoresSum+=scores;
 
     // Finding the current level
@@ -18,15 +19,34 @@ void Skill::AddScores(int scores)
     while(1)
     {
         // if ScoresSum between sum of scores for two levels
-        if(ScoresSum>=scoreLevel && ScoresSum < scoreLevel+ScoresForLevel[i])
+        if(ScoresSum>=scoreLevel && ScoresSum < scoreLevel+ScoresForSkillLevel[i])
         {
             Level = i;
             CurrentLevelScore = ScoresSum - scoreLevel;
-            ScoresToNextLevel = ScoresForLevel[i];
+            ScoresToNextLevel = ScoresForSkillLevel[i];
             break;
         }
-        scoreLevel+=ScoresForLevel[i];
+        scoreLevel+=ScoresForSkillLevel[i];
         i++;
+    }
+    */
+    CurrentLevelScore+=scores;
+
+    // Level up
+    if(CurrentLevelScore>ScoresToNextLevel)
+    {
+        // New current score
+        Level++;
+        CurrentLevelScore = CurrentLevelScore - ScoresToNextLevel;
+        ScoresToNextLevel = ScoresForSkillLevel[Level];
+
+        if(CurrentLevelScore>ScoresToNextLevel)
+        {
+            int scores = CurrentLevelScore;
+            CurrentLevelScore = 0;
+            AddScores(scores);
+        }
+
     }
 
 }

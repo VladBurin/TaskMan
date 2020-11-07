@@ -5,7 +5,7 @@
 #include "task.h"
 #include <string>
 
-extern std::vector<int> ScoresForLevel;
+extern std::vector<unsigned long long> ScoresForCharLevel;
 
 class Character
 {

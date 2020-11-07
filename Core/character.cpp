@@ -9,7 +9,7 @@ Character::Character(int id, std::string name, std::string description,
 }
 
 void Character::AddScores(int scores)
-{
+{   /*
     ScoresSum+=scores;
 
     // Finding the current level
@@ -18,16 +18,38 @@ void Character::AddScores(int scores)
     while(1)
     {
         // if ScoresSum between sum of scores for two levels
-        if(ScoresSum>=scoreLevel && ScoresSum < scoreLevel+ScoresForLevel[i])
+        if(ScoresSum>=scoreLevel && ScoresSum < scoreLevel+ScoresForCharLevel[i])
         {
             Level = i;
             CurrentLevelScore = ScoresSum - scoreLevel;
-            ScoresToNextLevel = ScoresForLevel[i];
+            ScoresToNextLevel = ScoresForCharLevel[i];
             break;
         }
-        scoreLevel+=ScoresForLevel[i];
+        scoreLevel+=ScoresForCharLevel[i];
         i++;
     }
+    */
+
+    CurrentLevelScore+=scores;
+
+    // Level up
+    if(CurrentLevelScore>ScoresToNextLevel)
+    {
+        // New current score
+        Level++;
+        CurrentLevelScore = CurrentLevelScore - ScoresToNextLevel;
+        ScoresToNextLevel = ScoresForCharLevel[Level];
+
+        if(CurrentLevelScore>ScoresToNextLevel)
+        {
+            int scores = CurrentLevelScore;
+            CurrentLevelScore = 0;
+            AddScores(scores);
+        }
+
+    }
+
+
 }
 
 //Getters

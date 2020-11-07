@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-extern std::vector<int> ScoresForLevel;
+extern std::vector<unsigned long long> ScoresForSkillLevel;
 
 class Skill
 {

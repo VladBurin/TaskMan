@@ -8,7 +8,6 @@
 #include "databaseinterface.h"
 #include "../Database/dbhandler.h"
 
-extern std::vector<int> ScoresForLevel;
 
 /// Хранит персонажей
 /// Создает и удаляет необходимые сущности (персонажы, скилы, задачи)
@@ -34,9 +33,9 @@ private:
     static int skill_id;
     static int task_id;
 
-    static std::vector<int> free_char_ids;
-    static std::vector<int> free_skills_ids;
-    static std::vector<int> free_tasks_ids;
+    static std::vector<long long> free_char_ids;
+    static std::vector<long long> free_skills_ids;
+    static std::vector<long long> free_tasks_ids;
 
     DataBaseInterface* DB;
 

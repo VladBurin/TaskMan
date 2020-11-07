@@ -6,44 +6,44 @@ int Engine::char_id     = 0;
 int Engine::skill_id    = 0;
 int Engine::task_id     = 0;
 
-std::vector<int> Engine::free_char_ids;
-std::vector<int> Engine::free_skills_ids;
-std::vector<int> Engine::free_tasks_ids;
+std::vector<long long> Engine::free_char_ids;
+std::vector<long long> Engine::free_skills_ids;
+std::vector<long long> Engine::free_tasks_ids;
 
-std::vector<int> ScoresForLevel;
-
-std::vector<int> ScoresForSkillUpdated;
+std::vector<unsigned long long> ScoresForCharLevel;
+std::vector<unsigned long long> ScoresForSkillLevel;
+std::vector<unsigned long long> ScoresForSkillUpdated;
 
 Engine::Engine()
 {
     DB = new DBhandler();
     DB->CreateBase("TaskMan");
 
-    FillScoresArrays(20);
+    FillScoresArrays(100);
 
     std::string characters_table = "characters "
-                                   "( id INT PRIMARY KEY NOT NULL, "
+                                   "( id BIGINT PRIMARY KEY NOT NULL, "
                                    "name TINYTEXT, "
                                    "description TEXT, "
-                                   "level INT, "
-                                   "scores_sum INT,"
-                                   "task_skill_id INT )";
+                                   "level BIGINT, "
+                                   "current_score BIGINT UNSIGNED,"
+                                   "task_skill_id BIGINT )";
 
     std::string skill_table = "skills "
-                              "(id INT PRIMARY KEY NOT NULL, "
+                              "(id BIGINT PRIMARY KEY NOT NULL, "
                               "name TINYTEXT, "
                               "description TEXT, "
-                              "level INT, "
-                              "scores_sum INT, "
-                              "char_id INT )";
+                              "level BIGINT, "
+                              "current_score BIGINT UNSIGNED, "
+                              "char_id BIGINT )";
 
     std::string tasks =         "tasks "
-                                 "(id INT PRIMARY KEY NOT NULL, "
+                                 "(id BIGINT PRIMARY KEY NOT NULL, "
                                  "name TEXT, "
                                  "description TEXT, "
-                                 "score_for_task INT, "
-                                 "belong_skill_id INT, "
-                                 "parent_task INT, "
+                                 "current_score BIGINT UNSIGNED, "
+                                 "belong_skill_id BIGINT, "
+                                 "parent_task BIGINT, "
                                  "complete BOOL )";
 
     DB->CreateTable(characters_table);
@@ -55,19 +55,21 @@ Engine::Engine()
 
 void Engine::FillScoresArrays(int lev)
 {
-    ScoresForLevel.clear();
+    ScoresForCharLevel.clear();
+    ScoresForSkillLevel.clear();
     ScoresForSkillUpdated.clear();
 
     for(int i = 0; i < lev; i++)
     {
-        int score = 0;
+        unsigned long long score = 0;
 
         if(i==0)
-            score = 100;
+            score = 50;
         else
-            score = ScoresForLevel.back()*2;
+            score = ScoresForSkillLevel.back()+50*(i+1);
 
-        ScoresForLevel.push_back(score);
+        ScoresForSkillLevel.push_back(score);
+        ScoresForCharLevel.push_back(score*2);
         ScoresForSkillUpdated.push_back(score/2);
     }
 }
