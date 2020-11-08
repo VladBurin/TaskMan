@@ -1,15 +1,16 @@
 #include "character.h"
 
-Character::Character(int id, std::string name, std::string description,
-                     int task_skill_id, int level, int scores_sum):
+Character::Character(ll id, std::string name, std::string description,
+                     ll task_skill_id, ll level, ll current_score):
                     Id(id), Name(name), Description(description),
-                    Level(level), ScoresSum(scores_sum)
+                    Level(level), CurrentLevelScore(current_score)
 {
-    AddScores(0);
+    ScoresToNextLevel = ScoresForCharLevel[Level];
 }
 
-void Character::AddScores(int scores)
-{   /*
+void Character::AddScores(ll scores)
+{
+    /*
     ScoresSum+=scores;
 
     // Finding the current level
@@ -42,18 +43,15 @@ void Character::AddScores(int scores)
 
         if(CurrentLevelScore>ScoresToNextLevel)
         {
-            int scores = CurrentLevelScore;
+            ll scores = CurrentLevelScore;
             CurrentLevelScore = 0;
             AddScores(scores);
         }
-
     }
-
-
 }
 
 //Getters
-const int Character::GetId() const
+const ll Character::GetId() const
 {
     return Id;
 }
@@ -68,32 +66,27 @@ const std::string& Character::GetDescript() const
     return Description;
 }
 
-const int Character::GetLevel() const
+const ll Character::GetLevel() const
 {
     return Level;
 }
 
-const int Character::GetScoresSum() const
-{
-    return ScoresSum;
-}
-
-const int Character::GetScoresToNextLevel() const
+const ll Character::GetScoresToNextLevel() const
 {
     return ScoresToNextLevel;
 }
 
-const int Character::GetCurrentLevelScore() const
+const ll Character::GetCurrentLevelScore() const
 {
     return CurrentLevelScore;
 }
 
-const int Character::GetTaskSkillId() const
+const ll Character::GetTaskSkillId() const
 {
     return TaskSkillId;
 }
 
-void Character::SetTaskSkillId(int id)
+void Character::SetTaskSkillId(ll id)
 {
     TaskSkillId = id;
 }

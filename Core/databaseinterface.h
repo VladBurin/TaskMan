@@ -24,16 +24,16 @@ public:
     virtual void SkillUpdate(Skill* skill) = 0;
     virtual void TaskUpdate(TaskUnit* task) = 0;
 
-    virtual void DeleteCharacter(int id) = 0;
-    virtual void DeleteSkill(int id) = 0;
-    virtual void DeleteTask(int id) = 0;
+    virtual void DeleteCharacter(ll id) = 0;
+    virtual void DeleteSkill(ll id) = 0;
+    virtual void DeleteTask(ll id) = 0;
 
 
     virtual std::vector<Character>  LoadCharacters() = 0;
     virtual std::vector<Skill>      LoadSkills() = 0;
     virtual std::vector<TaskUnit>   LoadTasks() = 0;
 
-    virtual std::vector<int> GetChildsById(int parent_id) = 0;
+    virtual std::vector<ll> GetChildsById(ll parent_id) = 0;
 };
 
 #endif // DATABASEINTERFACE_H

@@ -24,16 +24,16 @@ public:
     virtual void SkillUpdate(Skill* skill) final;
     virtual void TaskUpdate(TaskUnit* task) final;
 
-    virtual void DeleteCharacter(int id) final;
-    virtual void DeleteSkill(int id) final;
-    virtual void DeleteTask(int id) final;
+    virtual void DeleteCharacter(ll id) final;
+    virtual void DeleteSkill(ll id) final;
+    virtual void DeleteTask(ll id) final;
 
 
     virtual std::vector<Character>  LoadCharacters()final;
     virtual std::vector<Skill>      LoadSkills() final;
     virtual std::vector<TaskUnit>   LoadTasks() final;
 
-    virtual std::vector<int> GetChildsById(int parent_id) final;
+    virtual std::vector<ll> GetChildsById(ll parent_id) final;
 
 };
 

@@ -5,13 +5,13 @@
 #include "task.h"
 #include <string>
 
-extern std::vector<unsigned long long> ScoresForCharLevel;
+extern std::vector<ll> ScoresForCharLevel;
 
 class Character
 {
 private:
     /// Identifier
-    int Id;
+    ll Id;
 
     /// Name
     std::string Name;
@@ -20,47 +20,42 @@ private:
     std::string Description;
 
     /// Level
-    int Level;
-
-    /// Sum of scores
-    int ScoresSum;
+    ll Level;
 
     /// Scores to next level
-    int ScoresToNextLevel;
+    ll ScoresToNextLevel;
 
     /// Current scores
-    int CurrentLevelScore;
+    ll CurrentLevelScore;
 
     /// Skill for common tasks
-    int TaskSkillId;
+    ll TaskSkillId;
 
 public:
     /// Character can be loaded (with exact values of level, scores_sum) or created new one with 0 level and scores_sum
-    Character(int id, std::string name, std::string description, int task_skill_id, int level = 0, int scores_sum = 0);
+    Character(ll id, std::string name, std::string description, ll task_skill_id, ll level = 0, ll current_score = 0);
 
     /// Adding scores
     /// ScoresSum increase accurately
     /// Level may rise
-    void AddScores(int scores);
+    void AddScores(ll scores);
 
     ///Getters
-    const int GetId() const;
+    const ll GetId() const;
 
     const std::string& GetName() const;
 
     const std::string& GetDescript() const;
 
-    const int GetLevel() const;
+    const ll GetLevel() const;
 
-    const int GetScoresSum() const;
+    const ll GetScoresToNextLevel() const;
 
-    const int GetScoresToNextLevel() const;
+    const ll GetCurrentLevelScore() const;
 
-    const int GetCurrentLevelScore() const;
+    const ll GetTaskSkillId() const;
 
-    const int GetTaskSkillId() const;
-
-    void SetTaskSkillId(int id);
+    void SetTaskSkillId(ll id);
 };
 
 #endif // PERSONAGE_H

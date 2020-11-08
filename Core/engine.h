@@ -20,22 +20,22 @@ private:
     Engine& operator=( Engine& );
 
     /// Storage of Character
-    std::map<int, Character> Characters;
+    std::map<ll, Character> Characters;
 
     /// Хранилище задач
-    std::map<int,TaskUnit> Tasks;
+    std::map<ll,TaskUnit> Tasks;
 
     /// Хранилище скилов
-    std::map<int,Skill> Skills;
+    std::map<ll,Skill> Skills;
 
     //текущий свободный максимальный идентификатор
-    static int char_id;
-    static int skill_id;
-    static int task_id;
+    static ll char_id;
+    static ll skill_id;
+    static ll task_id;
 
-    static std::vector<long long> free_char_ids;
-    static std::vector<long long> free_skills_ids;
-    static std::vector<long long> free_tasks_ids;
+    static std::vector<ll> free_char_ids;
+    static std::vector<ll> free_skills_ids;
+    static std::vector<ll> free_tasks_ids;
 
     DataBaseInterface* DB;
 
@@ -51,50 +51,50 @@ public:
     /// Creating entities
     void CreateChar(std::string name, std::string description);
 
-    void CreateSkill(int char_id, std::string name, std::string description);
+    void CreateSkill(ll char_id, std::string name, std::string description);
 
     void CreateTask(std::string name, std::string description,
-                    int scores,  int belong_id, int par_id);
+                    ll scores,  ll belong_id, ll par_id);
 
 
     /// Deleting entities
-    void DeleteChar(int id);
+    void DeleteChar(ll id);
 
-    void DeleteSkill(int id);
+    void DeleteSkill(ll id);
 
-    void DeleteTask(int id);
+    void DeleteTask(ll id);
 
 
     /// Completing the task
-    void TaskComplete(int id);
+    void TaskComplete(ll id);
 
-    bool CheckChildCompleted(int id);
+    bool CheckChildCompleted(ll id);
 
     /// Incompleting completed task
-    void TaskIncomplete(int id, bool first);
+    void TaskIncomplete(ll id, bool first);
 
-    std::vector<int> GetPersIds();
+    std::vector<ll> GetPersIds();
 
-    std::vector<int> GetSkillsByPersId(int id);
+    std::vector<ll> GetSkillsByPersId(ll id);
 
-    std::vector<int> GetTasksBySkillId(int id);
+    std::vector<ll> GetTasksBySkillId(ll id);
 
     // Only root tasks (without parent)
-    std::vector<int> GetHighTasksBySkillId(int id);
+    std::vector<ll> GetHighTasksBySkillId(ll id);
 
 
-    Character* GetCharById(int id);
+    Character* GetCharById(ll id);
 
-    Skill* GetSkillById(int id);
+    Skill* GetSkillById(ll id);
 
-    TaskUnit* GetTaskById(int id);
+    TaskUnit* GetTaskById(ll id);
 
-    void AddScoreToChar(int id, int scores);
+    void AddScoreToChar(ll id, ll scores);
 
-    void AddScoreToSkill(int id, int scores);
+    void AddScoreToSkill(ll id, ll scores);
 
 private:
-    void FillScoresArrays(int lev);
+    void FillScoresArrays(ll lev);
 
     void LoadFromDB();
 

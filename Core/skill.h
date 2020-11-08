@@ -1,10 +1,13 @@
 #ifndef SKILL_H
 #define SKILL_H
 
+// Custom typedefs
+typedef long long ll;
+
 #include <string>
 #include <vector>
 
-extern std::vector<unsigned long long> ScoresForSkillLevel;
+extern std::vector<ll> ScoresForSkillLevel;
 
 class Skill
 {
@@ -12,7 +15,7 @@ class Skill
 private:
 
     /// Identifier
-    int Id;
+    ll Id;
 
     /// Name
     std::string Name;
@@ -21,45 +24,40 @@ private:
     std::string Description;
 
     /// Level
-    int Level;
-
-    /// Sum of scores
-    int ScoresSum;
+    ll Level;
 
     /// Scores to next level
-    int ScoresToNextLevel;
+    ll ScoresToNextLevel;
 
     /// Current scores
-    int CurrentLevelScore;
+    ll CurrentLevelScore;
 
     /// Identifier of character to whom the skill belongs
-    int CharId;
+    ll CharId;
 
 public:
     /// Skill can be loaded (with exact values of level, scores_sum) or created new one with 0 level and scores_sum
-    Skill(int id, int char_id, std::string name, std::string description, int level = 0 , int scores_sum = 0);
+    Skill(ll id, ll char_id, std::string name, std::string description, ll level = 0 , ll current_score = 0);
 
     /// Adding scores
     /// ScoresSum increase accurately
     /// Level may rise
-    void AddScores(int scores);
+    void AddScores(ll scores);
 
     /// Getters
-    const int GetId() const;
+    const ll GetId() const;
 
     const std::string& GetName() const;
 
     const std::string& GetDescript() const;
 
-    const int GetLevel() const;
+    const ll GetLevel() const;
 
-    const int GetScoresSum() const;
+    const ll GetScoresToNextLevel() const;
 
-    const int GetScoresToNextLevel() const;
+    const ll GetCurrentLevelScore() const;
 
-    const int GetCurrentLevelScore() const;
-
-    const int GetCharId() const;
+    const ll GetCharId() const;
 };
 
 #endif // SKILL_H

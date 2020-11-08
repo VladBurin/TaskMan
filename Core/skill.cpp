@@ -1,21 +1,21 @@
 #include "skill.h"
 
-Skill::Skill(int id, int char_id, std::string name, std::string description, int level, int scores_sum):
+Skill::Skill(ll id, ll char_id, std::string name, std::string description, ll level, ll current_score):
             Id(id), CharId(char_id), Name(name),
             Description(description), Level(level),
-            ScoresSum(scores_sum)
+            CurrentLevelScore(current_score)
 {
-    AddScores(0);
+    ScoresToNextLevel = ScoresForSkillLevel[Level];
 }
 
-void Skill::AddScores(int scores)
+void Skill::AddScores(ll scores)
 {
     /*
     ScoresSum+=scores;
 
     // Finding the current level
-    int scoreLevel=0;
-    int i = 0;
+    ll scoreLevel=0;
+    ll i = 0;
     while(1)
     {
         // if ScoresSum between sum of scores for two levels
@@ -42,17 +42,15 @@ void Skill::AddScores(int scores)
 
         if(CurrentLevelScore>ScoresToNextLevel)
         {
-            int scores = CurrentLevelScore;
+            ll scores = CurrentLevelScore;
             CurrentLevelScore = 0;
             AddScores(scores);
         }
-
     }
-
 }
 
 //Getters
-const int Skill::GetId() const
+const ll Skill::GetId() const
 {
     return Id;
 }
@@ -67,27 +65,22 @@ const std::string& Skill::GetDescript() const
     return Description;
 }
 
-const int Skill::GetScoresSum() const
-{
-    return ScoresSum;
-}
-
-const int Skill::GetScoresToNextLevel() const
+const ll Skill::GetScoresToNextLevel() const
 {
     return ScoresToNextLevel;
 }
 
-const int Skill::GetCurrentLevelScore() const
+const ll Skill::GetCurrentLevelScore() const
 {
     return CurrentLevelScore;
 }
 
-const int Skill::GetLevel() const
+const ll Skill::GetLevel() const
 {
     return Level;
 }
 
-const int Skill::GetCharId() const
+const ll Skill::GetCharId() const
 {
     return CharId;
 }

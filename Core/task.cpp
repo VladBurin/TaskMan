@@ -1,14 +1,14 @@
 #include "task.h"
 
-TaskUnit::TaskUnit(int id, std::string name, std::string description,
-                   int scores,  int belong_id, int par_id, bool completed)
+TaskUnit::TaskUnit(ll id, std::string name, std::string description,
+                   ll scores,  ll belong_id, ll par_id, bool completed)
                    : Id(id), Name(name), Description(description), ScoresForTask(scores),
                      BelongId(belong_id), Parent(par_id), Completed(completed)
 {
 
 }
 
-void TaskUnit::AddChild(int id)
+void TaskUnit::AddChild(ll id)
 {
     ChildTasks.push_back(id);
 }
@@ -20,12 +20,12 @@ void TaskUnit::SetCompleteStatus(bool complete)
 }
 
 // Getters
-const std::vector<int>& TaskUnit::GetChildTasksId() const
+const std::vector<ll>& TaskUnit::GetChildTasksId() const
 {
     return ChildTasks;
 }
 
-const int TaskUnit::GetId() const
+const ll TaskUnit::GetId() const
 {
     return Id;
 }
@@ -40,17 +40,17 @@ const std::string& TaskUnit::GetDescript() const
     return Description;
 }
 
-const int TaskUnit::GetParentId() const
+const ll TaskUnit::GetParentId() const
 {
     return Parent;
 }
 
-const int TaskUnit::GetScoresForTask() const
+const ll TaskUnit::GetScoresForTask() const
 {
     return ScoresForTask;
 }
 
-const int TaskUnit::GetBelongId() const
+const ll TaskUnit::GetBelongId() const
 {
     return BelongId;
 }

@@ -42,29 +42,29 @@ void DBhandler::CreateTable(std::string full_description)
 
 void DBhandler::AddCharacter(Character* pers)
 {
-    int id = pers->GetId();
+    ll id = pers->GetId();
 
     std::string name = pers->GetName();
 
     std::string descript = pers->GetDescript();
 
-    int level = pers->GetLevel();
+    ll level = pers->GetLevel();
 
-    int scores_sum = pers->GetScoresSum();
+    ll current_score = pers->GetCurrentLevelScore();
 
-    int task_skill_id = pers->GetTaskSkillId();
+    ll task_skill_id = pers->GetTaskSkillId();
 
     if(db.open())
     {
         QSqlQuery Query(db);
-        Query.prepare("INSERT INTO characters (id, name, description, level, scores_sum, task_skill_id) "
-                      "VALUES(:id, :name, :description, :level, :scores_sum, :task_skill_id);");
+        Query.prepare("INSERT INTO characters (id, name, description, level, current_score, task_skill_id) "
+                      "VALUES(:id, :name, :description, :level, :current_score, :task_skill_id);");
 
         Query.bindValue(":id", id);
         Query.bindValue(":name", QString::fromStdString(name));
         Query.bindValue(":description", QString::fromStdString(descript));
         Query.bindValue(":level", level);
-        Query.bindValue(":scores_sum", scores_sum);
+        Query.bindValue(":current_score", current_score);
         Query.bindValue(":task_skill_id", task_skill_id);
         Query.exec();
         return;
@@ -74,29 +74,29 @@ void DBhandler::AddCharacter(Character* pers)
 
 void DBhandler::AddSkill(Skill* skill)
 {
-    int id = skill->GetId();
+    ll id = skill->GetId();
 
     std::string name = skill->GetName();
 
     std::string descript = skill->GetDescript();
 
-    int level = skill->GetLevel();
+    ll level = skill->GetLevel();
 
-    int scores_sum = skill->GetScoresSum();
+    ll current_score = skill->GetCurrentLevelScore();
 
-    int char_id = skill->GetCharId();
+    ll char_id = skill->GetCharId();
 
     if(db.open())
     {
         QSqlQuery Query(db);
-        Query.prepare("INSERT INTO skills (id, name, description, level, scores_sum, char_id) "
-                      "VALUES(:id, :name, :description, :level, :scores_sum, :char_id);");
+        Query.prepare("INSERT INTO skills (id, name, description, level, current_score, char_id) "
+                      "VALUES(:id, :name, :description, :level, :current_score, :char_id);");
 
         Query.bindValue(":id", id);
         Query.bindValue(":name", QString::fromStdString(name));
         Query.bindValue(":description", QString::fromStdString(descript));
         Query.bindValue(":level", level);
-        Query.bindValue(":scores_sum", scores_sum);
+        Query.bindValue(":current_score", current_score);
         Query.bindValue(":char_id", char_id);
         Query.exec();
         return;
@@ -106,17 +106,17 @@ void DBhandler::AddSkill(Skill* skill)
 
 void DBhandler::AddTask(TaskUnit* task)
 {
-    int id = task->GetId();
+    ll id = task->GetId();
 
     std::string name = task->GetName();
 
     std::string descript = task->GetDescript();
 
-    int scores = task->GetScoresForTask();
+    ll score = task->GetScoresForTask();
 
-    int belong_skill_id = task->GetBelongId();
+    ll belong_skill_id = task->GetBelongId();
 
-    int parent_task = task->GetParentId();
+    ll parent_task = task->GetParentId();
 
     bool complete = task->GetCompletStatus();
 
@@ -124,13 +124,13 @@ void DBhandler::AddTask(TaskUnit* task)
     {
         QSqlQuery Query(db);
         Query.prepare("INSERT INTO tasks "
-                      "( id, name, description, score_for_task, belong_skill_id, parent_task, complete ) "
-                      "VALUES(:id, :name, :description, :score_for_task, :belong_skill_id, :parent_task, :complete); ");
+                      "( id, name, description, score, belong_skill_id, parent_task, complete ) "
+                      "VALUES(:id, :name, :description, :score, :belong_skill_id, :parent_task, :complete); ");
 
         Query.bindValue(":id", id);
         Query.bindValue(":name", QString::fromStdString(name));
         Query.bindValue(":description", QString::fromStdString(descript));
-        Query.bindValue(":score_for_task", scores);
+        Query.bindValue(":score", score);
         Query.bindValue(":belong_skill_id", belong_skill_id);
         Query.bindValue(":parent_task", parent_task);
         Query.bindValue(":complete", complete);
@@ -142,17 +142,17 @@ void DBhandler::AddTask(TaskUnit* task)
 
 void DBhandler::CharUpdate(Character* pers)
 {
-    int id = pers->GetId();
+    ll id = pers->GetId();
 
     std::string name = pers->GetName();
 
     std::string descript = pers->GetDescript();
 
-    int level = pers->GetLevel();
+    ll level = pers->GetLevel();
 
-    int scores_sum = pers->GetScoresSum();
+    ll current_score = pers->GetCurrentLevelScore();
 
-    int task_skill_id = pers->GetTaskSkillId();
+    ll task_skill_id = pers->GetTaskSkillId();
 
     if(db.open())
     {
@@ -161,7 +161,7 @@ void DBhandler::CharUpdate(Character* pers)
                       "SET name = :name, "
                       "description = :description, "
                       "level =  :level,"
-                      "scores_sum = :scores_sum, "
+                      "current_score = :current_score, "
                       "task_skill_id = :task_skill_id "
                       "WHERE id = :id;");
 
@@ -169,7 +169,7 @@ void DBhandler::CharUpdate(Character* pers)
         Query.bindValue(":name", QString::fromStdString(name));
         Query.bindValue(":description", QString::fromStdString(descript));
         Query.bindValue(":level", level);
-        Query.bindValue(":scores_sum", scores_sum);
+        Query.bindValue(":current_score", current_score);
         Query.bindValue(":task_skill_id", task_skill_id);
         Query.exec();
         return;
@@ -178,17 +178,17 @@ void DBhandler::CharUpdate(Character* pers)
 
 void DBhandler::SkillUpdate(Skill* skill)
 {
-    int id = skill->GetId();
+    ll id = skill->GetId();
 
     std::string name = skill->GetName();
 
     std::string descript = skill->GetDescript();
 
-    int level = skill->GetLevel();
+    ll level = skill->GetLevel();
 
-    int scores_sum = skill->GetScoresSum();
+    ll current_score = skill->GetCurrentLevelScore();
 
-    int char_id = skill->GetCharId();
+    ll char_id = skill->GetCharId();
 
     if(db.open())
     {
@@ -197,7 +197,7 @@ void DBhandler::SkillUpdate(Skill* skill)
                       "SET name = :name, "
                       "description = :description, "
                       "level =  :level, "
-                      "scores_sum = :scores_sum,"
+                      "current_score = :current_score,"
                       "char_id = :char_id "
                       "WHERE id = :id;");
 
@@ -205,7 +205,7 @@ void DBhandler::SkillUpdate(Skill* skill)
         Query.bindValue(":name", QString::fromStdString(name));
         Query.bindValue(":description", QString::fromStdString(descript));
         Query.bindValue(":level", level);
-        Query.bindValue(":scores_sum", scores_sum);
+        Query.bindValue(":current_score", current_score);
         Query.bindValue(":char_id", char_id);
         Query.exec();
         return;
@@ -214,17 +214,17 @@ void DBhandler::SkillUpdate(Skill* skill)
 
 void DBhandler::TaskUpdate(TaskUnit* task)
 {
-    int id = task->GetId();
+    ll id = task->GetId();
 
     std::string name = task->GetName();
 
     std::string descript = task->GetDescript();
 
-    int scores = task->GetScoresForTask();
+    ll score = task->GetScoresForTask();
 
-    int belong_skill_id = task->GetBelongId();
+    ll belong_skill_id = task->GetBelongId();
 
-    int parent_task = task->GetParentId();
+    ll parent_task = task->GetParentId();
 
     bool complete = task->GetCompletStatus();
 
@@ -235,7 +235,7 @@ void DBhandler::TaskUpdate(TaskUnit* task)
         Query.prepare("UPDATE tasks "
                       "SET name = :name, "
                       "description = :description, "
-                      "score_for_task =  :score_for_task, "
+                      "score =  :score, "
                       "belong_skill_id = :belong_skill_id,"
                       "parent_task = :parent_task, "
                       "complete = :complete "
@@ -244,7 +244,7 @@ void DBhandler::TaskUpdate(TaskUnit* task)
         Query.bindValue(":id", id);
         Query.bindValue(":name", QString::fromStdString(name));
         Query.bindValue(":description", QString::fromStdString(descript));
-        Query.bindValue(":score_for_task", scores);
+        Query.bindValue(":score", score);
         Query.bindValue(":belong_skill_id", belong_skill_id);
         Query.bindValue(":parent_task", parent_task);
         Query.bindValue(":complete", complete);
@@ -254,7 +254,7 @@ void DBhandler::TaskUpdate(TaskUnit* task)
 }
 
 
-void DBhandler::DeleteCharacter(int id)
+void DBhandler::DeleteCharacter(ll id)
 {
     if(db.open())
     {
@@ -267,7 +267,7 @@ void DBhandler::DeleteCharacter(int id)
     }
 }
 
-void DBhandler::DeleteSkill(int id)
+void DBhandler::DeleteSkill(ll id)
 {
     if(db.open())
     {
@@ -280,7 +280,7 @@ void DBhandler::DeleteSkill(int id)
     }
 }
 
-void DBhandler::DeleteTask(int id)
+void DBhandler::DeleteTask(ll id)
 {
     if(db.open())
     {
@@ -305,28 +305,26 @@ std::vector<Character> DBhandler::LoadCharacters()
         Query.exec();
         QSqlRecord rec = Query.record();
 
-        int id = 0;
+        ll id = 0;
         std::string name;
         std::string descript;
-        int task_skill_id = 0;
-        int level = 0;
-        int scores_sum = 0;
+        ll task_skill_id = 0;
+        ll level = 0;
+        ll current_score = 0;
 
         while(Query.next())
         {
-            id = Query.value(rec.indexOf("id")).toInt();
+            id = Query.value(rec.indexOf("id")).toLongLong();
             name = Query.value(rec.indexOf("name")).toString().toUtf8().data();
             descript = Query.value(rec.indexOf("description")).toString().toUtf8().data();
-            task_skill_id = Query.value(rec.indexOf("task_skill_id")).toString().toInt();
-            level = Query.value(rec.indexOf("level")).toInt();
-            scores_sum = Query.value(rec.indexOf("scores_sum")).toInt();
+            task_skill_id = Query.value(rec.indexOf("task_skill_id")).toString().toLongLong();
+            level = Query.value(rec.indexOf("level")).toLongLong();
+            current_score = Query.value(rec.indexOf("current_score")).toLongLong();
 
-            result.push_back(Character(id, name, descript, task_skill_id, level, scores_sum));
+            result.push_back(Character(id, name, descript, task_skill_id, level, current_score));
         }
-
-        return result;
     }
-
+    return result;
 }
 
 std::vector<Skill> DBhandler::LoadSkills()
@@ -340,26 +338,25 @@ std::vector<Skill> DBhandler::LoadSkills()
         Query.exec();
         QSqlRecord rec = Query.record();
 
-        int id = 0;
+        ll id = 0;
         std::string name;
         std::string descript;
-        int level = 0;
-        int scores_sum = 0;
-        int char_id = 0;
+        ll level = 0;
+        ll current_score = 0;
+        ll char_id = 0;
 
         while(Query.next())
         {
-            id = Query.value(rec.indexOf("id")).toInt();
+            id = Query.value(rec.indexOf("id")).toLongLong();
             name = Query.value(rec.indexOf("name")).toString().toUtf8().data();
             descript = Query.value(rec.indexOf("description")).toString().toUtf8().data();
-            level = Query.value(rec.indexOf("level")).toInt();
-            scores_sum = Query.value(rec.indexOf("scores_sum")).toInt();
-            char_id = Query.value(rec.indexOf("char_id")).toInt();
-            result.push_back(Skill(id,char_id,name,descript,level,scores_sum));
+            level = Query.value(rec.indexOf("level")).toLongLong();
+            current_score = Query.value(rec.indexOf("current_score")).toLongLong();
+            char_id = Query.value(rec.indexOf("char_id")).toLongLong();
+            result.push_back(Skill(id,char_id,name,descript,level,current_score));
         }
-
-        return result;
     }
+    return result;
 }
 
 std::vector<TaskUnit> DBhandler::LoadTasks()
@@ -373,34 +370,34 @@ std::vector<TaskUnit> DBhandler::LoadTasks()
         Query.exec();
         QSqlRecord rec = Query.record();
 
-        int id = 0;
+        ll id = 0;
         std::string name;
         std::string descript;
-        int scores_for_task = 0;
-        int belong_id = 0;
-        int par_id = 0;
+        ll score = 0;
+        ll belong_id = 0;
+        ll par_id = 0;
         bool complete = false;
 
         while(Query.next())
         {
-            id = Query.value(rec.indexOf("id")).toInt();
+            id = Query.value(rec.indexOf("id")).toLongLong();
             name = Query.value(rec.indexOf("name")).toString().toUtf8().data();
             descript = Query.value(rec.indexOf("description")).toString().toUtf8().data();
-            scores_for_task = Query.value(rec.indexOf("score_for_task")).toInt();
-            belong_id = Query.value(rec.indexOf("belong_skill_id")).toInt();
-            par_id = Query.value(rec.indexOf("parent_task")).toInt();
+            score = Query.value(rec.indexOf("score")).toLongLong();
+            belong_id = Query.value(rec.indexOf("belong_skill_id")).toLongLong();
+            par_id = Query.value(rec.indexOf("parent_task")).toLongLong();
             complete = Query.value(rec.indexOf("complete")).toBool();
 
-            result.push_back(TaskUnit(id, name, descript, scores_for_task, belong_id, par_id, complete));
+            result.push_back(TaskUnit(id, name, descript, score, belong_id, par_id, complete));
         }
-        return result;
     }
+    return result;
 }
 
 
-std::vector<int> DBhandler::GetChildsById(int parent_id)
+std::vector<ll> DBhandler::GetChildsById(ll parent_id)
 {
-    std::vector<int> result;
+    std::vector<ll> result;
 
     if(db.open())
     {
@@ -411,11 +408,11 @@ std::vector<int> DBhandler::GetChildsById(int parent_id)
         Query.exec();
         QSqlRecord rec = Query.record();
 
-        int id = 0;
+        ll id = 0;
 
         while(Query.next())
         {
-            id = Query.value(rec.indexOf("id")).toInt();
+            id = Query.value(rec.indexOf("id")).toLongLong();
             result.push_back(id);
         }
 
