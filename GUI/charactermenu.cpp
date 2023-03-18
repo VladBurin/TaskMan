@@ -72,7 +72,7 @@ void CharacterMenu::UpdateCharsGrid()
 //    }
 
     // Get all existing personages
-    std::vector<int> personages = Eng->GetPersIds();
+    std::vector<ll> personages = Eng->GetPersIds();
 
     // Creating buttons for personages
     Chars.clear();

@@ -58,7 +58,7 @@ void TaskForm::CreateChilds(int task_id, QTreeWidgetItem* par)
     item->setText(1, QString::number(task->GetScoresForTask()));
 
     //дети
-    std::vector<int> childs = task->GetChildTasksId();
+    std::vector<ll> childs = task->GetChildTasksId();
 
     // task completion status
     if(task->GetCompletStatus())
@@ -78,7 +78,7 @@ void TaskForm::UpdateTasks()
 
     ui->treeTasks->clear();
 
-    std::vector<int> tasks = Eng->GetHighTasksBySkillId(skill_id);
+    std::vector<ll> tasks = Eng->GetHighTasksBySkillId(skill_id);
 
     for(auto t = tasks.begin(); t != tasks.end(); ++t)
     {
@@ -92,7 +92,7 @@ void TaskForm::UpdateTasks()
         item->setText(1, QString::number(task->GetScoresForTask()));
 
         //дети и далее
-        std::vector<int> childs = task->GetChildTasksId();
+        std::vector<ll> childs = task->GetChildTasksId();
 
         // task completion status
         if(task->GetCompletStatus())
@@ -110,7 +110,7 @@ void TaskForm::UpdateTasks()
 void TaskForm::UpdateSkillsBox()
 {
     // Get pers skills
-    std::vector<int> skills = Eng->GetSkillsByPersId(CharId);
+    std::vector<ll> skills = Eng->GetSkillsByPersId(CharId);
     ui->comboboxSkills->clear();
 
     int task_skill = Eng->GetCharById(CharId)->GetTaskSkillId();

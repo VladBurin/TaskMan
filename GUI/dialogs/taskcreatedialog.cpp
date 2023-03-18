@@ -11,7 +11,7 @@ TaskCreateDialog::TaskCreateDialog(Engine *engine, int char_id,
     ui->setupUi(this);
 
     // Fill skill combobox with current skill
-    std::vector<int> skills = Eng->GetSkillsByPersId(CharId);
+    std::vector<ll> skills = Eng->GetSkillsByPersId(CharId);
     ui->comboBoxSkillChoice->clear();
 
     int task_skill = Eng->GetCharById(CharId)->GetTaskSkillId();
@@ -46,7 +46,7 @@ TaskCreateDialog::~TaskCreateDialog()
 void TaskCreateDialog::UpdateParentTaskBox(int skill_id)
 {
     // Fill parentTask comboBox
-    std::vector<int> tasks = Eng->GetTasksBySkillId(skill_id);
+    std::vector<ll> tasks = Eng->GetTasksBySkillId(skill_id);
     ui->comboBoxParentTaskChoice->clear();
 
     for(auto it = tasks.begin(); it != tasks.end(); ++it)

@@ -5,9 +5,9 @@
 #include <QtSql>
 
 #ifdef TASK_MAN_GUI
-    #include "../GUI/charactermenu.h"
-    #include "../GUI/taskform.h"
-    #include "../GUI/mainwindow.h"
+    #include "GUI/charactermenu.h"
+    #include "GUI/taskform.h"
+    #include "GUI/mainwindow.h"
 #endif
 
 int main(int argc, char *argv[])
